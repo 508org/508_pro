@@ -1,0 +1,436 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tianyang.modules.pc.dao.PcClusteringMarketDao">
+    
+	<sql id="pcClusteringMarketColumns">
+		a.id AS "id",
+		a.organization AS "organization.id",
+		attributed_grid	AS "attributedGrid.id",	
+		a.cluster_market_type AS "clusterMarketType",
+		a.cluster_market_name AS "clusterMarketName",
+		a.group_number AS "groupNumber",
+		a.shop_name AS "shopName",
+		a.address AS "address",
+		a.contact_name AS "contactName",
+		a.contact_phone AS "contactPhone",
+		a.employees_number AS "employeesNumber",
+		a.mobile_number AS "mobileNumber",
+		a.other_number AS "otherNumber",
+		a.is_overlay_mobile_network AS "isOverlayMobileNetwork",
+		a.is_use_broadband AS "isUseBroadband",
+		a.broadband_operators AS "broadbandOperators",
+		a.broadband_expiration_date AS "broadbandExpirationDate",
+		a.is_use_telephone AS "isUseTelephone",
+		a.telephone_operators AS "telephoneOperators",
+		a.telephone_expiration_date AS "telephoneExpirationDate",
+		a.other_product_usage AS "otherProductUsage",
+		a.customer_demand AS "customerDemand",
+		a.customer_manager_number AS "customerManagerNumber.id",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		concat(FORMAT(ifnull(ifnull(mobile_number,0)/(ifnull(mobile_number,0)+ifnull(other_number,0)),0)*100,0),'%') AS "marketShare",
+		o2.name AS "organization.name",
+		o3.name AS "attributedGrid.name",
+		u79.name AS "customerManagerNumber.name"
+	</sql>
+	
+	<sql id="pcClusteringMarketJoins">
+		LEFT JOIN sys_office o2 ON o2.id = a.organization
+		LEFT JOIN sys_office o3 ON o3.id = a.attributed_grid
+		LEFT JOIN sys_user u79 ON u79.id = a.customer_manager_number
+	</sql>
+    
+	<select id="get" resultType="PcClusteringMarket">
+		SELECT 
+			<include refid="pcClusteringMarketColumns"/>
+		FROM pc_clustering_market a
+		<include refid="pcClusteringMarketJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getClusteringMarket" resultType="PcClusteringMarket">
+		SELECT 
+			<include refid="pcClusteringMarketColumns"/>
+		FROM pc_clustering_market a
+		<include refid="pcClusteringMarketJoins"/>
+		WHERE a.del_flag = '0'
+		<!-- <if test="attributedGrid != null and attributedGrid != ''">
+			AND a.attributed_grid = #{attributedGrid}
+		</if>
+		<if test="clusterMarketType != null and clusterMarketType != ''">
+			AND a.cluster_market_type = #{clusterMarketType}
+		</if> -->
+		<if test="shopName != null and shopName != ''">
+			AND a.shop_name = #{shopName}
+		</if>
+	</select>
+	
+	<select id="findList" resultType="PcClusteringMarket">
+		SELECT 
+			<include refid="pcClusteringMarketColumns"/>
+		FROM pc_clustering_market a
+		<include refid="pcClusteringMarketJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="organization != null and organization.id != null and organization.id != ''">
+				AND a.organization = #{organization.id}
+			</if>
+			<if test="attributedGrid != null and attributedGrid.id != null and attributedGrid.id != ''">
+				AND a.attributed_grid = #{attributedGrid.id}
+			</if>
+			<if test="clusterMarketType != null and clusterMarketType != ''">
+				AND a.cluster_market_type = #{clusterMarketType}
+			</if>
+			<if test="clusterMarketName != null and clusterMarketName != ''">
+				AND a.cluster_market_name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{clusterMarketName}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{clusterMarketName}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{clusterMarketName},'%')</if>
+			</if>
+			<if test="groupNumber != null and groupNumber != ''">
+				AND a.group_number = #{groupNumber}
+			</if>
+			<if test="shopName != null and shopName != ''">
+				AND a.shop_name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{shopName}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{shopName}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{shopName},'%')</if>
+			</if>
+			<if test="isOverlayMobileNetwork != null and isOverlayMobileNetwork != ''">
+				AND a.is_overlay_mobile_network = #{isOverlayMobileNetwork}
+			</if>
+			<if test="isUseBroadband != null and isUseBroadband != ''">
+				AND a.is_use_broadband = #{isUseBroadband}
+			</if>
+			<if test="broadbandOperators != null and broadbandOperators != ''">
+				AND a.broadband_operators = #{broadbandOperators}
+			</if>
+			<if test="employeesNumber != null and employeesNumber != ''">
+				AND a.employees_number <![CDATA[ >= #{employeesNumber} ]]>
+			</if>
+			<if test="employeesNumberTo != null and employeesNumberTo != ''">
+				AND a.employees_number <![CDATA[ <= #{employeesNumberTo} ]]>
+			</if>
+			<if test="broadbandExpirationDate != null and broadbandExpirationDate != ''">
+				AND a.broadband_expiration_date <![CDATA[ >= #{broadbandExpirationDate} ]]>
+			</if>
+			<if test="broadbandExpirationDateTo != null and broadbandExpirationDateTo != ''">
+				AND a.broadband_expiration_date <![CDATA[ <= #{broadbandExpirationDateTo} ]]>
+			</if>
+			<if test="isUseTelephone != null and isUseTelephone != ''">
+				AND a.is_use_telephone = #{isUseTelephone}
+			</if>
+			<if test="telephoneOperators != null and telephoneOperators != ''">
+				AND a.telephone_operators = #{telephoneOperators}
+			</if>
+			<if test="telephoneExpirationDate != null and telephoneExpirationDate != ''">
+				AND a.telephone_expiration_date  <![CDATA[ >= #{telephoneExpirationDate} ]]>
+			</if>
+			<if test="telephoneExpirationDateTo != null and telephoneExpirationDateTo != ''">
+				AND a.telephone_expiration_date  <![CDATA[ <= #{telephoneExpirationDateTo} ]]>
+			</if>
+			<if test="marketShare != null and marketShare != ''">
+			   AND ifnull(ifnull(mobile_number,0)/(ifnull(mobile_number,0)+ifnull(other_number,0)),0)*100   <![CDATA[ >= #{marketShare} ]]>
+			</if>
+			
+			<if test="marketShareTo != null and marketShareTo != ''">
+			   AND ifnull(ifnull(mobile_number,0)/(ifnull(mobile_number,0)+ifnull(other_number,0)),0)*100   <![CDATA[ <= #{marketShareTo} ]]>
+			</if>
+			<if test="customerManagerNumber != null and customerManagerNumber.id != null and customerManagerNumber.id != ''">
+				AND a.customer_manager_number = #{customerManagerNumber.id}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			
+			<otherwise>
+			
+				ORDER BY 
+			<!--  <if test="sort != null and sort != ''">
+			    order #{sort}order by a.broadband_expiration_date DESC
+			</if> -->
+				a.organization ASC,a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findOrgCount" resultType="PcClusteringMarket">
+		SELECT 
+			o2.name AS "organization.name",
+			o2.id AS "organization.id",
+			count(a.id) as "groupCount",
+			sum(ifnull(a.employees_number,0)) as "employeesNumberCount",
+			concat(FORMAT(ifnull(sum(ifnull(mobile_number,0))/sum(ifnull(mobile_number,0)+ifnull(other_number,0)),0)*100,0),'%') AS "marketShareCountOur",
+			concat(FORMAT(ifnull(sum(ifnull(other_number,0))/sum(ifnull(mobile_number,0)+ifnull(other_number,0)),0)*100,0),'%') AS "marketShareCountOther",
+			concat(FORMAT(ifnull(count(case when a.is_use_broadband='1' and a.broadband_operators='1' then a.id end)/count(a.id),0)*100,0),'%') AS "broadbandPermeabilityOur",
+			concat(FORMAT(ifnull(count(case when a.is_use_broadband='1' and (a.broadband_operators='2' or a.broadband_operators='3') then a.id end)/count(a.id),0)*100,0),'%') AS "broadbandPermeabilityOther",
+			concat(FORMAT(ifnull(count(case when a.is_use_telephone='1' and a.telephone_operators='1' then a.id end)/count(a.id),0)*100,0),'%') AS "telPermeabilityOur",
+			concat(FORMAT(ifnull(count(case when a.is_use_telephone='1' and (a.telephone_operators='2' or a.telephone_operators='3') then a.id end)/count(a.id),0)*100,0),'%') AS "telPermeabilityOther",
+			<!-- count(case when DATEDIFF(phone_usage_mobile_expiration_date,CURDATE())<![CDATA[ <360]]>  then a.id end) AS "customerWarningOur",
+			count(case when DATEDIFF(phone_usage_unicom_expiration_date,CURDATE())<![CDATA[ <360]]> or DATEDIFF(phone_usage_telecom_expiration_date,CURDATE())<![CDATA[ <360]]> then a.id end) AS "customerWarningOther", -->
+			count(case when DATEDIFF(broadband_expiration_date,CURDATE())<![CDATA[ <360]]> and a.broadband_operators='1' then a.id end) AS "broadbandWarningOur",
+			count(case when DATEDIFF(broadband_expiration_date,CURDATE())<![CDATA[ <360]]> and (a.broadband_operators='2' or a.broadband_operators='3') then a.id end) AS "broadbandWarningOther",
+			count(case when DATEDIFF(telephone_expiration_date,CURDATE())<![CDATA[ <360]]> and a.telephone_operators='1' then a.id end) AS "telWarningOur",
+			count(case when DATEDIFF(telephone_expiration_date,CURDATE())<![CDATA[ <360]]> and (a.telephone_operators='2' or a.telephone_operators='3') then a.id end) AS "telWarningOther"
+			
+		FROM sys_office o2
+		LEFT JOIN (<include refid="selectPcClusteringMarket"/>) a ON a.organization in  (select id from sys_office where parent_id=o2.id) or a.organization=o2.id
+		<where>
+			o2.del_flag = #{DEL_FLAG_NORMAL}
+			and (o2.id='1' or o2.parent_id='1')	
+							
+		</where>
+		group by 	o2.id
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY o2.sort ASC,o2.id ASC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findGridCount" resultType="PcClusteringMarket">
+		SELECT 
+			o2.name AS "attributedGrid.name",
+			o2.id AS "attributedGrid.id",
+			count(a.id) as "groupCount",
+			sum(ifnull(a.employees_number,0)) as "employeesNumberCount",
+			concat(FORMAT(ifnull(sum(ifnull(mobile_number,0))/sum(ifnull(mobile_number,0)+ifnull(other_number,0)),0)*100,0),'%') AS "marketShareCountOur",
+			concat(FORMAT(ifnull(sum(ifnull(other_number,0))/sum(ifnull(mobile_number,0)+ifnull(other_number,0)),0)*100,0),'%') AS "marketShareCountOther",
+			concat(FORMAT(ifnull(count(case when a.is_use_broadband='1' and a.broadband_operators='1' then a.id end)/count(a.id),0)*100,0),'%') AS "broadbandPermeabilityOur",
+			concat(FORMAT(ifnull(count(case when a.is_use_broadband='1' and (a.broadband_operators='2' or a.broadband_operators='3') then a.id end)/count(a.id),0)*100,0),'%') AS "broadbandPermeabilityOther",
+			concat(FORMAT(ifnull(count(case when a.is_use_telephone='1' and a.telephone_operators='1' then a.id end)/count(a.id),0)*100,0),'%') AS "telPermeabilityOur",
+			concat(FORMAT(ifnull(count(case when a.is_use_telephone='1' and (a.telephone_operators='2' or a.telephone_operators='3') then a.id end)/count(a.id),0)*100,0),'%') AS "telPermeabilityOther",
+			<!-- count(case when DATEDIFF(phone_usage_mobile_expiration_date,CURDATE())<![CDATA[ <360]]>  then a.id end) AS "customerWarningOur",
+			count(case when DATEDIFF(phone_usage_unicom_expiration_date,CURDATE())<![CDATA[ <360]]> or DATEDIFF(phone_usage_telecom_expiration_date,CURDATE())<![CDATA[ <360]]> then a.id end) AS "customerWarningOther", -->
+			count(case when DATEDIFF(broadband_expiration_date,CURDATE())<![CDATA[ <360]]> and a.broadband_operators='1' then a.id end) AS "broadbandWarningOur",
+			count(case when DATEDIFF(broadband_expiration_date,CURDATE())<![CDATA[ <360]]> and (a.broadband_operators='2' or a.broadband_operators='3') then a.id end) AS "broadbandWarningOther",
+			count(case when DATEDIFF(telephone_expiration_date,CURDATE())<![CDATA[ <360]]> and a.telephone_operators='1' then a.id end) AS "telWarningOur",
+			count(case when DATEDIFF(telephone_expiration_date,CURDATE())<![CDATA[ <360]]> and (a.telephone_operators='2' or a.telephone_operators='3') then a.id end) AS "telWarningOther"
+			
+		FROM sys_office o2
+		LEFT JOIN (<include refid="selectPcClusteringMarket"/>) a ON a.attributed_grid=o2.id
+		<where>
+			o2.del_flag = #{DEL_FLAG_NORMAL}
+			and o2.id<![CDATA[<>]]>'1' and o2.parent_id<![CDATA[<>]]>'1'
+			<if test="organization != null and organization.id != null and organization.id != ''">
+				AND o2.parent_id = #{organization.id}
+			</if>					
+		</where>
+		group by 	o2.id
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY o2.sort ASC,o2.id ASC
+			</otherwise>
+		</choose>
+	</select>
+	<select id="findManagerCount" resultType="PcClusteringMarket">
+		SELECT 
+			o2.name AS "customerManagerNumber.name",
+			o2.id AS "customerManagerNumber.id",
+			count(a.id) as "groupCount",
+			sum(ifnull(a.employees_number,0)) as "employeesNumberCount",
+			concat(FORMAT(ifnull(sum(ifnull(mobile_number,0))/sum(ifnull(mobile_number,0)+ifnull(other_number,0)),0)*100,0),'%') AS "marketShareCountOur",
+			concat(FORMAT(ifnull(sum(ifnull(other_number,0))/sum(ifnull(mobile_number,0)+ifnull(other_number,0)),0)*100,0),'%') AS "marketShareCountOther",
+			concat(FORMAT(ifnull(count(case when a.is_use_broadband='1' and a.broadband_operators='1' then a.id end)/count(a.id),0)*100,0),'%') AS "broadbandPermeabilityOur",
+			concat(FORMAT(ifnull(count(case when a.is_use_broadband='1' and (a.broadband_operators='2' or a.broadband_operators='3') then a.id end)/count(a.id),0)*100,0),'%') AS "broadbandPermeabilityOther",
+			concat(FORMAT(ifnull(count(case when a.is_use_telephone='1' and a.telephone_operators='1' then a.id end)/count(a.id),0)*100,0),'%') AS "telPermeabilityOur",
+			concat(FORMAT(ifnull(count(case when a.is_use_telephone='1' and (a.telephone_operators='2' or a.telephone_operators='3') then a.id end)/count(a.id),0)*100,0),'%') AS "telPermeabilityOther",
+			<!-- count(case when DATEDIFF(phone_usage_mobile_expiration_date,CURDATE())<![CDATA[ <360]]>  then a.id end) AS "customerWarningOur",
+			count(case when DATEDIFF(phone_usage_unicom_expiration_date,CURDATE())<![CDATA[ <360]]> or DATEDIFF(phone_usage_telecom_expiration_date,CURDATE())<![CDATA[ <360]]> then a.id end) AS "customerWarningOther", -->
+			count(case when DATEDIFF(broadband_expiration_date,CURDATE())<![CDATA[ <360]]> and a.broadband_operators='1' then a.id end) AS "broadbandWarningOur",
+			count(case when DATEDIFF(broadband_expiration_date,CURDATE())<![CDATA[ <360]]> and (a.broadband_operators='2' or a.broadband_operators='3') then a.id end) AS "broadbandWarningOther",
+			count(case when DATEDIFF(telephone_expiration_date,CURDATE())<![CDATA[ <360]]> and a.telephone_operators='1' then a.id end) AS "telWarningOur",
+			count(case when DATEDIFF(telephone_expiration_date,CURDATE())<![CDATA[ <360]]> and (a.telephone_operators='2' or a.telephone_operators='3') then a.id end) AS "telWarningOther"
+			
+		FROM sys_user o2
+		LEFT JOIN (<include refid="selectPcClusteringMarket"/>) a ON a.customer_manager_number=o2.id
+		<where>
+			<if test="attributedGrid != null and attributedGrid.id != null and attributedGrid.id != ''">
+				o2.office_id = #{attributedGrid.id}
+			</if>					
+		</where>
+		group by 	o2.id
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY o2.id ASC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<sql id="selectPcClusteringMarket">
+	    select a.* from pc_clustering_market a
+	    <where>
+			a.del_flag = '0'
+			<if test="attributedGrid != null and attributedGrid.id != null and attributedGrid.id != ''">
+				AND a.attributed_grid = #{attributedGrid.id}
+			</if>
+			<if test="organization != null and organization.id != null and organization.id != ''">
+				AND a.organization = #{organization.id}
+			</if>
+			<if test="clusterMarketType != null and clusterMarketType != ''">
+				AND a.cluster_market_type = #{clusterMarketType}
+			</if>
+			
+			<if test="isOverlayMobileNetwork != null and isOverlayMobileNetwork != ''">
+				AND a.is_overlay_mobile_network = #{isOverlayMobileNetwork}
+			</if>
+			<if test="isUseBroadband != null and isUseBroadband != ''">
+				AND a.is_use_broadband = #{isUseBroadband}
+			</if>
+			
+			<if test="employeesNumber != null and employeesNumber != ''">
+				AND a.employees_number <![CDATA[ >= #{employeesNumber} ]]>
+			</if>
+			<if test="employeesNumberTo != null and employeesNumberTo != ''">
+				AND a.employees_number <![CDATA[ <= #{employeesNumberTo} ]]>
+			</if>
+			
+			<if test="isUseTelephone != null and isUseTelephone != ''">
+				AND a.is_use_telephone = #{isUseTelephone}
+			</if>
+			
+			<if test="marketShare != null and marketShare != ''">
+			   AND ifnull(ifnull(mobile_number,0)/(ifnull(mobile_number,0)+ifnull(other_number,0)),0)*100   <![CDATA[ >= #{marketShare} ]]>
+			</if>
+			
+			<if test="marketShareTo != null and marketShareTo != ''">
+			   AND ifnull(ifnull(mobile_number,0)/(ifnull(mobile_number,0)+ifnull(other_number,0)),0)*100   <![CDATA[ <= #{marketShareTo} ]]>
+			</if>
+		</where>
+	</sql>
+	
+	
+	<select id="findAllList" resultType="PcClusteringMarket">
+		SELECT 
+			<include refid="pcClusteringMarketColumns"/>
+		FROM pc_clustering_market a
+		<include refid="pcClusteringMarketJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO pc_clustering_market(
+			id,
+			organization,
+			attributed_grid,
+			cluster_market_type,
+			cluster_market_name,
+			group_number,
+			shop_name,
+			address,
+			contact_name,
+			contact_phone,
+			employees_number,
+			mobile_number,
+			other_number,
+			is_overlay_mobile_network,
+			is_use_broadband,
+			broadband_operators,
+			broadband_expiration_date,
+			is_use_telephone,
+			telephone_operators,
+			telephone_expiration_date,
+			other_product_usage,
+			customer_demand,
+			customer_manager_number,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{organization.id},
+			#{attributedGrid.id},
+			#{clusterMarketType},
+			#{clusterMarketName},
+			#{groupNumber},
+			#{shopName},
+			#{address},
+			#{contactName},
+			#{contactPhone},
+			#{employeesNumber},
+			#{mobileNumber},
+			#{otherNumber},
+			#{isOverlayMobileNetwork},
+			#{isUseBroadband},
+			#{broadbandOperators},
+			#{broadbandExpirationDate},
+			#{isUseTelephone},
+			#{telephoneOperators},
+			#{telephoneExpirationDate},
+			#{otherProductUsage},
+			#{customerDemand},
+			#{customerManagerNumber.id},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE pc_clustering_market SET 	
+			organization = #{organization.id},
+			attributed_grid = #{attributedGrid.id},
+			cluster_market_type = #{clusterMarketType},
+			cluster_market_name = #{clusterMarketName},
+			group_number = #{groupNumber},
+			shop_name = #{shopName},
+			address = #{address},
+			contact_name = #{contactName},
+			contact_phone = #{contactPhone},
+			employees_number = #{employeesNumber},
+			mobile_number = #{mobileNumber},
+			other_number = #{otherNumber},
+			is_overlay_mobile_network = #{isOverlayMobileNetwork},
+			is_use_broadband = #{isUseBroadband},
+			broadband_operators = #{broadbandOperators},
+			broadband_expiration_date = #{broadbandExpirationDate},
+			is_use_telephone = #{isUseTelephone},
+			telephone_operators = #{telephoneOperators},
+			telephone_expiration_date = #{telephoneExpirationDate},
+			other_product_usage = #{otherProductUsage},
+			customer_demand = #{customerDemand},
+			customer_manager_number = #{customerManagerNumber.id},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE pc_clustering_market SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

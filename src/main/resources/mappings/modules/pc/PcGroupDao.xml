@@ -1,0 +1,1213 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tianyang.modules.pc.dao.PcGroupDao">
+    
+	<sql id="pcGroupColumns">
+		a.id AS "id",
+		a.organization AS "organization.id",
+		attributed_grid	AS "attributedGrid.id",	
+		a.group_number AS "groupNumber",
+		a.group_name AS "groupName",
+		
+		a.group_state      AS "groupState",
+		a.org_parent_name  AS "orgParentName",
+		
+		a.customer_level AS "customerLevel",
+		a.first_industry_category AS "firstIndustryCategory",
+		a.second_industry_category AS "secondIndustryCategory",
+		a.enterprise_type AS "enterpriseType",
+		a.unit_actual_address AS "unitActualAddress",
+		a.identification_number AS "identificationNumber",
+		a.registered_capital AS "registeredCapital",
+		a.tax_revenue AS "taxRevenue",
+		a.number_one_name AS "numberOneName",
+		a.number_one_phone AS "numberOnePhone",
+		a.charge_key_person_name AS "chargeKeyPersonName",
+		a.charge_key_person_phone AS "chargeKeyPersonPhone",
+		a.other_key_person_name AS "otherKeyPersonName",
+		a.other_key_person_phone AS "otherKeyPersonPhone",
+		a.contacts_name AS "contactsName",
+		a.contacts_phone AS "contactsPhone",
+		a.phone_usage_employees_number AS "phoneUsageEmployeesNumber",
+		a.phone_usage_mobile_number AS "phoneUsageMobileNumber",
+		a.phone_usage_mobile_monthly_income AS "phoneUsageMobileMonthlyIncome",
+		a.phone_usage_mobile_expiration_date AS "phoneUsageMobileExpirationDate",
+		a.phone_usage_unicom_number AS "phoneUsageUnicomNumber",
+		a.phone_usage_unicom_monthly_income AS "phoneUsageUnicomMonthlyIncome",
+		a.phone_usage_unicom_expiration_date AS "phoneUsageUnicomExpirationDate",
+		a.phone_usage_telecom_number AS "phoneUsageTelecomNumber",
+		a.phone_usage_telecom_monthly_income AS "phoneUsageTelecomMonthlyIncome",
+		a.phone_usage_telecom_expiration_date AS "phoneUsageTelecomExpirationDate",
+		a.data_line_mobile_number AS "dataLineMobileNumber",
+		a.data_line_mobile_monthly_income AS "dataLineMobileMonthlyIncome",
+		a.data_line_mobile_expiration_date AS "dataLineMobileExpirationDate",
+		a.data_line_unicom_number AS "dataLineUnicomNumber",
+		a.data_line_unicom_monthly_income AS "dataLineUnicomMonthlyIncome",
+		a.data_line_unicom_expiration_date AS "dataLineUnicomExpirationDate",
+		a.data_line_telecom_number AS "dataLineTelecomNumber",
+		a.data_line_telecom_monthly_income AS "dataLineTelecomMonthlyIncome",
+		a.data_line_telecom_expiration_date AS "dataLineTelecomExpirationDate",
+		a.internet_line_mobile_number AS "internetLineMobileNumber",
+		a.internet_line_mobile_monthly_income AS "internetLineMobileMonthlyIncome",
+		a.internet_line_mobile_expiration_date AS "internetLineMobileExpirationDate",
+		a.internet_line_unicom_number AS "internetLineUnicomNumber",
+		a.internet_line_unicom_monthly_income AS "internetLineUnicomMonthlyIncome",
+		a.internet_line_unicom_expiration_date AS "internetLineUnicomExpirationDate",
+		a.internet_line_telecom_number AS "internetLineTelecomNumber",
+		a.internet_line_telecom_monthly_income AS "internetLineTelecomMonthlyIncome",
+		a.internet_line_telecom_expiration_date AS "internetLineTelecomExpirationDate",
+		a.voice_line_mobile_number AS "voiceLineMobileNumber",
+		a.voice_line_mobile_monthly_income AS "voiceLineMobileMonthlyIncome",
+		a.voice_line_mobile_expiration_date AS "voiceLineMobileExpirationDate",
+		a.voice_line_unicom_number AS "voiceLineUnicomNumber",
+		a.voice_line_unicom_monthly_income AS "voiceLineUnicomMonthlyIncome",
+		a.voice_line_unicom_expiration_date AS "voiceLineUnicomExpirationDate",
+		a.voice_line_telecom_number AS "voiceLineTelecomNumber",
+		a.voice_line_telecom_monthly_income AS "voiceLineTelecomMonthlyIncome",
+		a.voice_line_telecom_expiration_date AS "voiceLineTelecomExpirationDate",
+		a.ims_mobile_number AS "imsMobileNumber",
+		a.ims_mobile_monthly_income AS "imsMobileMonthlyIncome",
+		a.ims_mobile_expiration_date AS "imsMobileExpirationDate",
+		a.ims_unicom_number AS "imsUnicomNumber",
+		a.ims_unicom_monthly_income AS "imsUnicomMonthlyIncome",
+		a.ims_unicom_expiration_date AS "imsUnicomExpirationDate",
+		a.ims_telecom_number AS "imsTelecomNumber",
+		a.ims_telecom_monthly_income AS "imsTelecomMonthlyIncome",
+		a.ims_telecom_expiration_date AS "imsTelecomExpirationDate",
+		
+		a.wlwk_yd_businessname AS "wlwkYdBusinessName",
+		a.wlwk_yd_income       AS "wlwkYdIncome",      
+		a.wlwk_yd_dateto       AS "wlwkYdDateTo",      
+	   
+		a.wlwk_lt_businessname AS "wlwkLtBusinessName",
+		a.wlwk_lt_income       AS "wlwkLtIncome",      
+		a.wlwk_lt_dateto       AS "wlwkLtDateTo",      
+	    
+		a.wlwk_dx_businessname AS "wlwkDxBusinessName",
+		a.wlwk_dx_income       AS "wlwkDxIncome",      
+		a.wlwk_dx_dateto       AS "wlwkDxDateTo",     
+	
+		
+		a.idc_yd_businessname AS "iDCYdBusinessName",
+		a.idc_yd_zf           AS "iDCYdZf",          
+		a.idc_yd_dateto       AS "iDCYdDateTo",      
+	
+	    
+		a.idc_lt_businessname AS "iDCLtBusinessName",
+		a.idc_lt_zf           AS "iDCLtZf",         
+		a.idc_lt_dateto       AS "iDCLtDateTo",      
+		
+		a.idc_qt_businessname AS "iDCQtBusinessName",
+		a.idc_qt_addr         AS "iDCQtAddr",       
+		a.idc_qt_zf           AS "iDCQtZf",         
+		a.idc_qt_dateto       AS "iDCQtDateTo",      
+		
+		a.other_products_mobile_business_name AS "otherProductsMobileBusinessName",
+		a.other_products_mobile_monthly_income AS "otherProductsMobileMonthlyIncome",
+		a.other_products_mobile_expiration_date AS "otherProductsMobileExpirationDate",
+		a.other_products_unicom_business_name AS "otherProductsUnicomBusinessName",
+		a.other_products_unicom_monthly_income AS "otherProductsUnicomMonthlyIncome",
+		a.other_products_unicom_expiration_date AS "otherProductsUnicomExpirationDate",
+		a.other_products_telecom_business_name AS "otherProductsTelecomBusinessName",
+		a.other_products_telecom_monthly_income AS "otherProductsTelecomMonthlyIncome",
+		a.other_products_telecom_expiration_date AS "otherProductsTelecomExpirationDate",
+		a.follow_up_business_name AS "followUpBusinessName",
+		a.follow_up_situation AS "followUpSituation",
+		a.customer_manager_number AS "customerManagerNumber",
+		a.customer_manager_name AS "customerManagerName",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		a.unified_payment_number AS "unifiedPaymentNumber",
+		a.unified_payment_income AS "unifiedPaymentIncome",
+		a.information_key_person_phone AS "informationKeyPersonPhone",
+		a.information_key_person_name AS "informationKeyPersonName",
+		concat(FORMAT(ifnull(ifnull(phone_usage_mobile_number,0)/(ifnull(phone_usage_mobile_number,0)+ifnull(phone_usage_unicom_number,0)+ifnull(phone_usage_telecom_number,0)),0)*100,0),'%') AS "marketShare",
+		o2.name AS "organization.name",
+		o3.name AS "attributedGrid.name"<!-- ,
+		u79.name AS "customerManagerNumber.name" -->
+	</sql>
+	
+	<sql id="pcGroupJoins">
+		LEFT JOIN sys_office o2 ON o2.id = a.organization
+		LEFT JOIN sys_office o3 ON o3.id = a.attributed_grid
+		<!-- LEFT JOIN sys_user u79 ON u79.id = a.customer_manager_number -->
+	</sql>
+     
+	<select id="get" resultType="PcGroup">
+		SELECT 
+			<include refid="pcGroupColumns"/>
+		FROM pc_group a
+		<include refid="pcGroupJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	<select id="getGroupByGroupNumber" resultType="PcGroup">
+		SELECT 
+			<include refid="pcGroupColumns"/>
+		FROM pc_group a
+		<include refid="pcGroupJoins"/>
+		WHERE a.del_flag = '0'
+		<if test="groupNumber != null and groupNumber != ''">
+				AND a.group_number = #{groupNumber}
+		</if>
+	</select>
+	
+	<select id="findList" resultType="PcGroup">
+		SELECT  
+			<include refid="pcGroupColumns"/>
+		FROM pc_group a
+		<include refid="pcGroupJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="organization != null and organization.id != null and organization.id != ''">
+				AND ( a.organization = #{organization.id}  or o2.parent_id = #{organization.id})
+			</if>
+			<if test="attributedGrid != null and attributedGrid.id != null and attributedGrid.id != ''">
+				AND a.attributed_grid = #{attributedGrid.id}
+			</if>
+			<if test="groupNumber != null and groupNumber != ''">
+				AND a.group_number LIKE 
+					<if test="dbName == 'oracle'">'%'||#{groupNumber}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{groupNumber}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{groupNumber},'%')</if>
+			</if>
+			<if test="groupName != null and groupName != ''">
+				AND a.group_name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{groupName}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{groupName}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{groupName},'%')</if>
+			</if>
+			<if test="customerLevel != null and customerLevel != ''">
+				AND a.customer_level LIKE concat('%',#{customerLevel},'%')
+			</if>
+			<if test="firstIndustryCategory != null and firstIndustryCategory != ''">
+				AND a.first_industry_category = #{firstIndustryCategory}
+			</if>
+			<if test="secondIndustryCategory != null and secondIndustryCategory != ''">
+				AND a.second_industry_category LIKE concat('%',#{secondIndustryCategory},'%')
+			</if>
+			<!-- <if test="attributedGrid != null and attributedGrid != ''">
+				AND a.attributed_grid LIKE 
+					<if test="dbName == 'oracle'">'%'||#{attributedGrid}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{attributedGrid}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{attributedGrid},'%')</if>
+			</if> -->
+			
+			<if test="groupState != null and groupState != ''">
+				AND a.group_state     = #{groupState}
+			</if>
+			<if test="orgParentName != null and orgParentName != ''">
+				AND a.org_parent_name = #{orgParentName}
+			</if>
+			
+			<if test="enterpriseType != null and enterpriseType != ''">
+				AND a.enterprise_type = #{enterpriseType}
+			</if>
+			<if test="registeredCapital != null and registeredCapital != ''">
+				AND a.registered_capital <![CDATA[ >= #{registeredCapital} ]]>
+			</if>
+			<if test="registeredCapitalTo != null and registeredCapitalTo != ''">
+				AND a.registered_capital <![CDATA[ <= #{registeredCapitalTo} ]]>
+			</if>
+			<if test="taxRevenue != null and taxRevenue != ''">
+				AND a.tax_revenue <![CDATA[ >= #{taxRevenue} ]]>
+			</if>
+			<if test="taxRevenueTo != null and taxRevenueTo != ''">
+				AND a.tax_revenue <![CDATA[ <= #{taxRevenueTo} ]]>
+			</if>
+			<if test="phoneUsageEmployeesNumber != null and phoneUsageEmployeesNumber != ''">
+				AND a.phone_usage_employees_number <![CDATA[ >= #{phoneUsageEmployeesNumber} ]]> 
+			</if>
+			<if test="phoneUsageEmployeesNumberTo != null and phoneUsageEmployeesNumberTo != ''">
+				AND a.phone_usage_employees_number <![CDATA[ <= #{phoneUsageEmployeesNumberTo} ]]> 
+			</if>
+			
+			<if test="phoneUsageMobileMonthlyIncome != null and phoneUsageMobileMonthlyIncome != ''">
+				AND a.phone_usage_mobile_monthly_income+0  <![CDATA[ >=#{phoneUsageMobileMonthlyIncome}]]>
+			</if>
+			<if test="phoneUsageMobileMonthlyIncomeTo != null and phoneUsageMobileMonthlyIncomeTo != ''">
+				AND a.phone_usage_mobile_monthly_income+0 <![CDATA[ <= #{phoneUsageMobileMonthlyIncomeTo} ]]>
+			</if>
+			
+			<if test="phoneUsageMobileExpirationDate != null and phoneUsageMobileExpirationDate != ''">
+				AND a.phone_usage_mobile_expiration_date <![CDATA[ >= #{phoneUsageMobileExpirationDate} ]]>
+			</if>
+			<if test="phoneUsageMobileExpirationDateTo != null and phoneUsageMobileExpirationDateTo != ''">
+				AND a.phone_usage_mobile_expiration_date <![CDATA[ <= #{phoneUsageMobileExpirationDateTo} ]]>
+			</if>
+			
+			<if test="phoneUsageUnicomMonthlyIncome != null and phoneUsageUnicomMonthlyIncome != ''">
+				AND a.phone_usage_unicom_monthly_income+0 <![CDATA[ >= #{phoneUsageUnicomMonthlyIncome} ]]>
+			</if>
+			<if test="phoneUsageUnicomMonthlyIncomeTo != null and phoneUsageUnicomMonthlyIncomeTo != ''">
+				AND a.phone_usage_unicom_monthly_income+0 <![CDATA[ <= #{phoneUsageUnicomMonthlyIncomeTo} ]]>
+			</if>			
+			
+			<if test="phoneUsageUnicomExpirationDate != null and phoneUsageUnicomExpirationDate != ''">
+				AND a.phone_usage_unicom_expiration_date <![CDATA[ >= #{phoneUsageUnicomExpirationDate} ]]>
+			</if>
+			<if test="phoneUsageUnicomExpirationDateTo != null and phoneUsageUnicomExpirationDateTo != ''">
+				AND a.phone_usage_unicom_expiration_date <![CDATA[ <= #{phoneUsageUnicomExpirationDateTo} ]]>
+			</if>
+			
+			<if test="phoneUsageTelecomMonthlyIncome != null and phoneUsageTelecomMonthlyIncome != ''">
+				AND a.phone_usage_telecom_monthly_income+0 <![CDATA[ >= #{phoneUsageTelecomMonthlyIncome} ]]>
+			</if>
+			<if test="phoneUsageTelecomMonthlyIncomeTo != null and phoneUsageTelecomMonthlyIncomeTo != ''">
+				AND a.phone_usage_telecom_monthly_income+0 <![CDATA[ <= #{phoneUsageTelecomMonthlyIncomeTo} ]]>
+			</if>
+			
+			<if test="phoneUsageTelecomExpirationDate != null and phoneUsageTelecomExpirationDate != ''">
+				AND a.phone_usage_telecom_expiration_date <![CDATA[ >= #{phoneUsageTelecomExpirationDate} ]]>
+			</if>
+			<if test="phoneUsageTelecomExpirationDateTo != null and phoneUsageTelecomExpirationDateTo != ''">
+				AND a.phone_usage_telecom_expiration_date <![CDATA[ <= #{phoneUsageTelecomExpirationDateTo} ]]>
+			</if>
+			
+			<if test="dataLineMobileMonthlyIncome != null and dataLineMobileMonthlyIncome != ''">
+				AND a.data_line_mobile_monthly_income+0 <![CDATA[ >= #{dataLineMobileMonthlyIncome} ]]>
+			</if>
+			<if test="dataLineMobileMonthlyIncomeTo != null and dataLineMobileMonthlyIncomeTo != ''">
+				AND a.data_line_mobile_monthly_income+0 <![CDATA[ <= #{dataLineMobileMonthlyIncomeTo} ]]>
+			</if>
+			
+			<if test="dataLineMobileExpirationDate != null and dataLineMobileExpirationDate != ''">
+				AND a.data_line_mobile_expiration_date <![CDATA[ >= #{dataLineMobileExpirationDate} ]]>
+			</if>
+			<if test="dataLineMobileExpirationDateTo != null and dataLineMobileExpirationDateTo != ''">
+				AND a.data_line_mobile_expiration_date <![CDATA[ <= #{dataLineMobileExpirationDateTo} ]]>
+			</if>
+			
+			<if test="dataLineUnicomMonthlyIncome != null and dataLineUnicomMonthlyIncome != ''">
+				AND a.data_line_unicom_monthly_income+0<![CDATA[ >= #{dataLineUnicomMonthlyIncome} ]]>
+			</if>
+			<if test="dataLineUnicomMonthlyIncomeTo != null and dataLineUnicomMonthlyIncomeTo != ''">
+				AND a.data_line_unicom_monthly_income+0 <![CDATA[ <= #{dataLineUnicomMonthlyIncomeTo} ]]>
+			</if>
+			
+			<if test="dataLineUnicomExpirationDate != null and dataLineUnicomExpirationDate != ''">
+				AND a.data_line_unicom_expiration_date <![CDATA[ >= #{dataLineUnicomExpirationDate} ]]>
+			</if>
+			<if test="dataLineUnicomExpirationDateTo != null and dataLineUnicomExpirationDateTo != ''">
+				AND a.data_line_unicom_expiration_date <![CDATA[ <= #{dataLineUnicomExpirationDateTo} ]]>
+			</if>
+			
+			<if test="dataLineTelecomMonthlyIncome != null and dataLineTelecomMonthlyIncome != ''">
+				AND a.data_line_telecom_monthly_income+0 <![CDATA[ >= #{dataLineTelecomMonthlyIncome} ]]>
+			</if>
+			<if test="dataLineTelecomMonthlyIncomeTo != null and dataLineTelecomMonthlyIncomeTo != ''">
+				AND a.data_line_telecom_monthly_income+0 <![CDATA[ <= #{dataLineTelecomMonthlyIncomeTo} ]]>
+			</if>
+			
+			<if test="dataLineTelecomExpirationDate != null and dataLineTelecomExpirationDate != ''">
+				AND a.data_line_telecom_expiration_date <![CDATA[ >= #{dataLineTelecomExpirationDate} ]]>
+			</if>
+			<if test="dataLineTelecomExpirationDateTo != null and dataLineTelecomExpirationDateTo != ''">
+				AND a.data_line_telecom_expiration_date <![CDATA[ <= #{dataLineTelecomExpirationDateTo} ]]>
+			</if>
+			
+			<if test="internetLineMobileMonthlyIncome != null and internetLineMobileMonthlyIncome != ''">
+				AND a.internet_line_mobile_monthly_income+0 <![CDATA[ >= #{internetLineMobileMonthlyIncome} ]]>
+			</if>
+			<if test="internetLineMobileMonthlyIncomeTo != null and internetLineMobileMonthlyIncomeTo != ''">
+				AND a.internet_line_mobile_monthly_income+0 <![CDATA[ <= #{internetLineMobileMonthlyIncomeTo} ]]>
+			</if>
+			
+			<if test="internetLineMobileExpirationDate != null and internetLineMobileExpirationDate != ''">
+				AND a.internet_line_mobile_expiration_date <![CDATA[ >= #{internetLineMobileExpirationDate} ]]>
+			</if>
+			<if test="internetLineMobileExpirationDateTo != null and internetLineMobileExpirationDateTo != ''">
+				AND a.internet_line_mobile_expiration_date <![CDATA[ <= #{internetLineMobileExpirationDateTo} ]]>
+			</if>
+			
+			<if test="internetLineUnicomMonthlyIncome != null and internetLineUnicomMonthlyIncome != ''">
+				AND a.internet_line_unicom_monthly_income+0 <![CDATA[ >= #{internetLineUnicomMonthlyIncome} ]]>
+			</if>
+			<if test="internetLineUnicomMonthlyIncomeTo != null and internetLineUnicomMonthlyIncomeTo != ''">
+				AND a.internet_line_unicom_monthly_income+0 <![CDATA[ <= #{internetLineUnicomMonthlyIncomeTo} ]]>
+			</if>
+			
+			<if test="internetLineUnicomExpirationDate != null and internetLineUnicomExpirationDate != ''">
+				AND a.internet_line_unicom_expiration_date <![CDATA[ >= #{internetLineUnicomExpirationDate} ]]>
+			</if>
+			<if test="internetLineUnicomExpirationDateTo != null and internetLineUnicomExpirationDateTo != ''">
+				AND a.internet_line_unicom_expiration_date <![CDATA[ <= #{internetLineUnicomExpirationDateTo} ]]>
+			</if>
+			
+			<if test="internetLineTelecomMonthlyIncome != null and internetLineTelecomMonthlyIncome != ''">
+				AND a.internet_line_telecom_monthly_income+0 <![CDATA[ >= #{internetLineTelecomMonthlyIncome} ]]>
+			</if>
+			<if test="internetLineTelecomMonthlyIncomeTo != null and internetLineTelecomMonthlyIncomeTo != ''">
+				AND a.internet_line_telecom_monthly_income+0 <![CDATA[ <= #{internetLineTelecomMonthlyIncomeTo} ]]>
+			</if>
+			
+			<if test="internetLineTelecomExpirationDate != null and internetLineTelecomExpirationDate != ''">
+				AND a.internet_line_telecom_expiration_date <![CDATA[ >= #{internetLineTelecomExpirationDate} ]]>
+			</if>
+			<if test="internetLineTelecomExpirationDateTo != null and internetLineTelecomExpirationDateTo != ''">
+				AND a.internet_line_telecom_expiration_date <![CDATA[ <= #{internetLineTelecomExpirationDateTo} ]]>
+			</if>
+			
+			<if test="voiceLineMobileMonthlyIncome != null and voiceLineMobileMonthlyIncome != ''">
+				AND a.voice_line_mobile_monthly_income+0 <![CDATA[ >= #{voiceLineMobileMonthlyIncome} ]]>
+			</if>
+			<if test="voiceLineMobileMonthlyIncomeTo != null and voiceLineMobileMonthlyIncomeTo != ''">
+				AND a.voice_line_mobile_monthly_income+0 <![CDATA[ <= #{voiceLineMobileMonthlyIncomeTo} ]]>
+			</if>
+			
+			<if test="voiceLineMobileExpirationDate != null and voiceLineMobileExpirationDate != ''">
+				AND a.voice_line_mobile_expiration_date <![CDATA[ >= #{voiceLineMobileExpirationDate} ]]>
+			</if>
+			<if test="voiceLineMobileExpirationDateTo != null and voiceLineMobileExpirationDateTo != ''">
+				AND a.voice_line_mobile_expiration_date <![CDATA[ <= #{voiceLineMobileExpirationDateTo} ]]>
+			</if>
+			
+			<if test="voiceLineUnicomMonthlyIncome != null and voiceLineUnicomMonthlyIncome != ''">
+				AND a.voice_line_unicom_monthly_income+0 <![CDATA[ >= #{voiceLineUnicomMonthlyIncome} ]]>
+			</if>
+			<if test="voiceLineUnicomMonthlyIncomeTo != null and voiceLineUnicomMonthlyIncomeTo != ''">
+				AND a.voice_line_unicom_monthly_income+0 <![CDATA[ <= #{voiceLineUnicomMonthlyIncomeTo} ]]>
+			</if>
+			
+			<if test="voiceLineUnicomExpirationDate != null and voiceLineUnicomExpirationDate != ''">
+				AND a.voice_line_unicom_expiration_date <![CDATA[ >= #{voiceLineUnicomExpirationDate} ]]>
+			</if>
+			<if test="voiceLineUnicomExpirationDateTo != null and voiceLineUnicomExpirationDateTo != ''">
+				AND a.voice_line_unicom_expiration_date <![CDATA[ <= #{voiceLineUnicomExpirationDateTo} ]]>
+			</if>
+			
+			<if test="voiceLineTelecomMonthlyIncome != null and voiceLineTelecomMonthlyIncome != ''">
+				AND a.voice_line_telecom_monthly_income+0 <![CDATA[ >= #{voiceLineTelecomMonthlyIncome} ]]>
+			</if>
+			<if test="voiceLineTelecomMonthlyIncomeTo != null and voiceLineTelecomMonthlyIncomeTo != ''">
+				AND a.voice_line_telecom_monthly_income+0 <![CDATA[ <= #{voiceLineTelecomMonthlyIncomeTo} ]]>
+			</if>
+			
+			<if test="voiceLineTelecomExpirationDate != null and voiceLineTelecomExpirationDate != ''">
+				AND a.voice_line_telecom_expiration_date <![CDATA[ >= #{voiceLineTelecomExpirationDate} ]]>
+			</if>
+			<if test="voiceLineTelecomExpirationDateTo != null and voiceLineTelecomExpirationDateTo != ''">
+				AND a.voice_line_telecom_expiration_date <![CDATA[ <= #{voiceLineTelecomExpirationDateTo} ]]>
+			</if>
+			
+			<if test="imsMobileMonthlyIncome != null and imsMobileMonthlyIncome != ''">
+				AND a.ims_mobile_monthly_income+0 <![CDATA[ >= #{imsMobileMonthlyIncome} ]]>
+			</if>
+			<if test="imsMobileMonthlyIncomeTo != null and imsMobileMonthlyIncomeTo != ''">
+				AND a.ims_mobile_monthly_income+0 <![CDATA[ <= #{imsMobileMonthlyIncomeTo} ]]>
+			</if>
+			
+			<if test="imsMobileExpirationDate != null and imsMobileExpirationDate != ''">
+				AND a.ims_mobile_expiration_date <![CDATA[ >= #{imsMobileExpirationDate} ]]>
+			</if>
+			<if test="imsMobileExpirationDateTo != null and imsMobileExpirationDateTo != ''">
+				AND a.ims_mobile_expiration_date <![CDATA[ <= #{imsMobileExpirationDateTo} ]]>
+			</if>
+			
+			<if test="imsUnicomMonthlyIncome != null and imsUnicomMonthlyIncome != ''">
+				AND a.ims_unicom_monthly_income+0 <![CDATA[ >= #{imsUnicomMonthlyIncome} ]]>
+			</if>
+			<if test="imsUnicomMonthlyIncomeTo != null and imsUnicomMonthlyIncomeTo != ''">
+				AND a.ims_unicom_monthly_income+0 <![CDATA[ <= #{imsUnicomMonthlyIncomeTo} ]]>
+			</if>
+			
+			<if test="imsUnicomExpirationDate != null and imsUnicomExpirationDate != ''">
+				AND a.ims_unicom_expiration_date <![CDATA[ >= #{imsUnicomExpirationDate} ]]>
+			</if>
+			<if test="imsUnicomExpirationDateTo != null and imsUnicomExpirationDateTo != ''">
+				AND a.ims_unicom_expiration_date <![CDATA[ <= #{imsUnicomExpirationDateTo} ]]>
+			</if>
+			
+			<if test="imsTelecomMonthlyIncome != null and imsTelecomMonthlyIncome != ''">
+				AND a.ims_telecom_monthly_income+0 <![CDATA[ >= #{imsTelecomMonthlyIncome} ]]>
+			</if>
+			<if test="imsTelecomMonthlyIncomeTo != null and imsTelecomMonthlyIncomeTo != ''">
+				AND a.ims_telecom_monthly_income+0 <![CDATA[ <= #{imsTelecomMonthlyIncomeTo} ]]>
+			</if>
+			
+			<if test="imsTelecomExpirationDate != null and imsTelecomExpirationDate != ''">
+				AND a.ims_telecom_expiration_date <![CDATA[ >= #{imsTelecomExpirationDate} ]]>
+			</if>
+			<if test="imsTelecomExpirationDateTo != null and imsTelecomExpirationDateTo != ''">
+				AND a.ims_telecom_expiration_date <![CDATA[ <= #{imsTelecomExpirationDateTo} ]]>
+			</if>
+			
+			
+			<if test="wlwkYdIncome != null and wlwkYdIncome != ''">
+				AND a.wlwk_yd_income+0 <![CDATA[ >= #{wlwkYdIncome} ]]>
+			</if>
+			<if test="wlwkYdIncomeTo != null and wlwkYdIncomeTo != ''">
+				AND a.wlwk_yd_income+0 <![CDATA[ <= #{wlwkYdIncomeTo} ]]>
+			</if>
+			<if test="wlwkLtIncome != null and wlwkLtIncome != ''">
+				AND a.wlwk_lt_income+0 <![CDATA[ >= #{wlwkLtIncome} ]]>
+			</if>
+			<if test="wlwkLtIncomeTo != null and wlwkLtIncomeTo != ''">
+				AND a.wlwk_lt_income+0 <![CDATA[ <= #{wlwkLtIncomeTo} ]]>
+			</if>
+			<if test="wlwkDxIncome != null and wlwkDxIncome != ''">
+				AND a.wlwk_dx_income+0 <![CDATA[ >= #{wlwkDxIncome} ]]>
+			</if>
+			<if test="wlwkDxIncomeTo != null and wlwkDxIncomeTo != ''">
+				AND a.wlwk_dx_income+0 <![CDATA[ <= #{wlwkDxIncomeTo} ]]>
+			</if>
+			<if test="iDCYdZf != null and iDCYdZf != ''">
+				AND a.idc_yd_zf+0 <![CDATA[ >= #{iDCYdZf} ]]>
+			</if>
+			<if test="iDCYdZfTo != null and iDCYdZfTo != ''">
+				AND a.idc_yd_zf+0 <![CDATA[ <= #{iDCYdZfTo} ]]>
+			</if>
+			<if test="iDCLtZf != null and iDCLtZf != ''">
+				AND a.idc_lt_zf+0 <![CDATA[ >= #{iDCLtZf} ]]>
+			</if>
+			<if test="iDCLtZfTo != null and iDCLtZfTo != ''">
+				AND a.idc_lt_zf+0 <![CDATA[ <= #{iDCLtZfTo} ]]>
+			</if>
+			<if test="iDCQtZf != null and iDCQtZf != ''">
+				AND a.idc_qt_zf+0 <![CDATA[ >= #{iDCQtZf} ]]>
+			</if>
+			<if test="iDCQtZfTo != null and iDCQtZfTo != ''">
+				AND a.idc_qt_zf+0 <![CDATA[ <= #{iDCQtZfTo} ]]>
+			</if>
+			 
+			
+			<if test="otherProductsMobileMonthlyIncome != null and otherProductsMobileMonthlyIncome != ''">
+				AND a.other_products_mobile_monthly_income+0 <![CDATA[ >= #{otherProductsMobileMonthlyIncome} ]]>
+			</if>
+			<if test="otherProductsMobileMonthlyIncomeTo != null and otherProductsMobileMonthlyIncomeTo != ''">
+				AND a.other_products_mobile_monthly_income+0 <![CDATA[ <= #{otherProductsMobileMonthlyIncomeTo} ]]>
+			</if>
+			
+			<if test="otherProductsMobileExpirationDate != null and otherProductsMobileExpirationDate != ''">
+				AND a.other_products_mobile_expiration_date <![CDATA[ >= #{otherProductsMobileExpirationDate} ]]>
+			</if>
+			<if test="otherProductsMobileExpirationDateTo != null and otherProductsMobileExpirationDateTo != ''">
+				AND a.other_products_mobile_expiration_date <![CDATA[ <= #{otherProductsMobileExpirationDateTo} ]]>
+			</if>
+			
+			<if test="otherProductsUnicomMonthlyIncome != null and otherProductsUnicomMonthlyIncome != ''">
+				AND a.other_products_unicom_monthly_income+0 <![CDATA[ >= #{otherProductsUnicomMonthlyIncome} ]]>
+			</if>
+			<if test="otherProductsUnicomMonthlyIncomeTo != null and otherProductsUnicomMonthlyIncomeTo != ''">
+				AND a.other_products_unicom_monthly_income+0 <![CDATA[ <= #{otherProductsUnicomMonthlyIncomeTo} ]]>
+			</if>
+			
+			<if test="otherProductsUnicomExpirationDate != null and otherProductsUnicomExpirationDate != ''">
+				AND a.other_products_unicom_expiration_date <![CDATA[ >= #{otherProductsUnicomExpirationDate} ]]>
+			</if>
+			<if test="otherProductsUnicomExpirationDateTo != null and otherProductsUnicomExpirationDateTo != ''">
+				AND a.other_products_unicom_expiration_date <![CDATA[ <= #{otherProductsUnicomExpirationDateTo} ]]>
+			</if>
+			
+			<if test="otherProductsTelecomMonthlyIncome != null and otherProductsTelecomMonthlyIncome != ''">
+				AND a.other_products_telecom_monthly_income+0 <![CDATA[ >= #{otherProductsTelecomMonthlyIncome} ]]>
+			</if>
+			<if test="otherProductsTelecomMonthlyIncomeTo != null and otherProductsTelecomMonthlyIncomeTo != ''">
+				AND a.other_products_telecom_monthly_income+0 <![CDATA[ <= #{otherProductsTelecomMonthlyIncomeTo} ]]>
+			</if>
+			
+			<!-- <if test="customerManagerNumber != null and customerManagerNumber.id != null and customerManagerNumber.id != ''">
+				AND a.customer_manager_number = #{customerManagerNumber.id}
+			</if> -->
+			<if test="customerManagerNumber != null and customerManagerNumber != ''">
+				AND a.customer_manager_number LIKE concat('%',#{customerManagerNumber},'%')
+			</if>
+			<if test="marketShare != null and marketShare != ''">
+			   AND ifnull(ifnull(phone_usage_mobile_number,0)/(ifnull(phone_usage_mobile_number,0)+ifnull(phone_usage_unicom_number,0)+ifnull(phone_usage_telecom_number,0)),0)*100   <![CDATA[ >= #{marketShare} ]]>
+			</if>
+			
+			<if test="marketShareTo != null and marketShareTo != ''">
+			   AND ifnull(ifnull(phone_usage_mobile_number,0)/(ifnull(phone_usage_mobile_number,0)+ifnull(phone_usage_unicom_number,0)+ifnull(phone_usage_telecom_number,0)),0)*100   <![CDATA[ <= #{marketShareTo} ]]>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY 
+			<if test="sort != null and sort != ''">
+			    #{sort}
+			</if>
+				a.organization ASC,a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findOrgCount" resultType="PcGroup">
+		SELECT 
+			o2.name AS "organization.name",
+			o2.id AS "organization.id",
+			count(a.id) as "groupCount",
+			sum(ifnull(a.phone_usage_employees_number,0)) as "employeesNumberCount",
+			concat(FORMAT(ifnull(sum(ifnull(phone_usage_mobile_number,0))/sum(ifnull(phone_usage_mobile_number,0)+ifnull(phone_usage_unicom_number,0)+ifnull(phone_usage_telecom_number,0)),0)*100,0),'%') AS "marketShareCountOur",
+			concat(FORMAT(ifnull(sum(ifnull(phone_usage_unicom_number,0)+ifnull(phone_usage_telecom_number,0))/sum(ifnull(phone_usage_mobile_number,0)+ifnull(phone_usage_unicom_number,0)+ifnull(phone_usage_telecom_number,0)),0)*100,0),'%') AS "marketShareCountOther",
+			concat(FORMAT(ifnull(count(case when a.data_line_mobile_number>0 or a.internet_line_mobile_number>0 or a.voice_line_mobile_number>0 then a.id end)/count(a.id),0)*100,0),'%') AS "linePermeabilityOur",
+			concat(FORMAT(ifnull(count(case when a.data_line_unicom_number>0 or a.data_line_telecom_number>0 or a.internet_line_unicom_number>0 or a.internet_line_telecom_number>0 or a.voice_line_unicom_number>0 or a.voice_line_telecom_number>0 then a.id end)/count(a.id),0)*100,0),'%') AS "linePermeabilityOther",
+			concat(FORMAT(ifnull(count(case when a.ims_mobile_number>0 then a.id end)/count(a.id),0)*100,0),'%') AS "imsPermeabilityOur",
+			concat(FORMAT(ifnull(count(case when a.ims_unicom_number>0 or a.ims_telecom_number>0 then a.id end)/count(a.id),0)*100,0),'%') AS "imsPermeabilityOther",
+			count(case when DATEDIFF(phone_usage_mobile_expiration_date,CURDATE())<![CDATA[ <360]]>  then a.id end) AS "customerWarningOur",
+			count(case when DATEDIFF(phone_usage_unicom_expiration_date,CURDATE())<![CDATA[ <360]]> or DATEDIFF(phone_usage_telecom_expiration_date,CURDATE())<![CDATA[ <360]]> then a.id end) AS "customerWarningOther",
+			count(case when DATEDIFF(data_line_mobile_expiration_date,CURDATE())<![CDATA[ <360]]> or DATEDIFF(internet_line_mobile_expiration_date,CURDATE())<![CDATA[ <360]]> or DATEDIFF(voice_line_mobile_expiration_date,CURDATE())<![CDATA[ <360]]> then a.id end) AS "lineWarningOur",
+			count(case when DATEDIFF(data_line_unicom_expiration_date,CURDATE())<![CDATA[ <360]]> or DATEDIFF(data_line_telecom_expiration_date,CURDATE())<![CDATA[ <360]]> or DATEDIFF(internet_line_unicom_expiration_date,CURDATE())<![CDATA[ <360]]> or DATEDIFF(internet_line_telecom_expiration_date,CURDATE())<![CDATA[ <360]]> or DATEDIFF(voice_line_unicom_expiration_date,CURDATE())<![CDATA[ <360]]> or DATEDIFF(voice_line_telecom_expiration_date,CURDATE())<![CDATA[ <360]]> then a.id end) AS "lineWarningOther",
+			count(case when DATEDIFF(ims_mobile_expiration_date,CURDATE())<![CDATA[ <360]]> then a.id end) AS "imsWarningOur",
+			count(case when DATEDIFF(ims_unicom_expiration_date,CURDATE())<![CDATA[ <360]]> or DATEDIFF(ims_telecom_expiration_date,CURDATE())<![CDATA[ <360]]> then a.id end) AS "imsWarningOther",
+			count(case when DATEDIFF(other_products_mobile_expiration_date,CURDATE())<![CDATA[ <360]]> then a.id end) AS "otherWarningOur",
+			count(case when DATEDIFF(other_products_unicom_expiration_date,CURDATE())<![CDATA[ <360]]> or DATEDIFF(other_products_telecom_expiration_date,CURDATE())<![CDATA[ <360]]> then a.id end) AS "otherWarningOther"
+		
+		FROM sys_office o2
+		LEFT JOIN (<include refid="selectPcGroup"/>) a ON a.organization in  (select id from sys_office  where parent_id=o2.id) or a.organization=o2.id
+		<where>
+			o2.del_flag = #{DEL_FLAG_NORMAL}
+			and (o2.id='1' or o2.parent_id='1')					
+		</where>
+		group by 	o2.id
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY o2.sort ASC,o2.id ASC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findGridCount" resultType="PcGroup">
+		SELECT 
+			o2.name AS "attributedGrid.name",
+			o2.id AS "attributedGrid.id",
+			count(a.id) as "groupCount",
+			sum(ifnull(a.phone_usage_employees_number,0)) as "employeesNumberCount",
+			concat(FORMAT(ifnull(sum(ifnull(phone_usage_mobile_number,0))/sum(ifnull(phone_usage_mobile_number,0)+ifnull(phone_usage_unicom_number,0)+ifnull(phone_usage_telecom_number,0)),0)*100,0),'%') AS "marketShareCountOur",
+			concat(FORMAT(ifnull(sum(ifnull(phone_usage_unicom_number,0)+ifnull(phone_usage_telecom_number,0))/sum(ifnull(phone_usage_mobile_number,0)+ifnull(phone_usage_unicom_number,0)+ifnull(phone_usage_telecom_number,0)),0)*100,0),'%') AS "marketShareCountOther",
+			concat(FORMAT(ifnull(count(case when a.data_line_mobile_number>0 or a.internet_line_mobile_number>0 or a.voice_line_mobile_number>0 then a.id end)/count(a.id),0)*100,0),'%') AS "linePermeabilityOur",
+			concat(FORMAT(ifnull(count(case when a.data_line_unicom_number>0 or a.data_line_telecom_number>0 or a.internet_line_unicom_number>0 or a.internet_line_telecom_number>0 or a.voice_line_unicom_number>0 or a.voice_line_telecom_number>0 then a.id end)/count(a.id),0)*100,0),'%') AS "linePermeabilityOther",
+			concat(FORMAT(ifnull(count(case when a.ims_mobile_number>0 then a.id end)/count(a.id),0)*100,0),'%') AS "imsPermeabilityOur",
+			concat(FORMAT(ifnull(count(case when a.ims_unicom_number>0 or a.ims_telecom_number>0 then a.id end)/count(a.id),0)*100,0),'%') AS "imsPermeabilityOther",
+			count(case when DATEDIFF(phone_usage_mobile_expiration_date,CURDATE())<![CDATA[ <360]]>  then a.id end) AS "customerWarningOur",
+			count(case when DATEDIFF(phone_usage_unicom_expiration_date,CURDATE())<![CDATA[ <360]]> or DATEDIFF(phone_usage_telecom_expiration_date,CURDATE())<![CDATA[ <360]]> then a.id end) AS "customerWarningOther",
+			count(case when DATEDIFF(data_line_mobile_expiration_date,CURDATE())<![CDATA[ <360]]> or DATEDIFF(internet_line_mobile_expiration_date,CURDATE())<![CDATA[ <360]]> or DATEDIFF(voice_line_mobile_expiration_date,CURDATE())<![CDATA[ <360]]> then a.id end) AS "lineWarningOur",
+			count(case when DATEDIFF(data_line_unicom_expiration_date,CURDATE())<![CDATA[ <360]]> or DATEDIFF(data_line_telecom_expiration_date,CURDATE())<![CDATA[ <360]]> or DATEDIFF(internet_line_unicom_expiration_date,CURDATE())<![CDATA[ <360]]> or DATEDIFF(internet_line_telecom_expiration_date,CURDATE())<![CDATA[ <360]]> or DATEDIFF(voice_line_unicom_expiration_date,CURDATE())<![CDATA[ <360]]> or DATEDIFF(voice_line_telecom_expiration_date,CURDATE())<![CDATA[ <360]]> then a.id end) AS "lineWarningOther",
+			count(case when DATEDIFF(ims_mobile_expiration_date,CURDATE())<![CDATA[ <360]]> then a.id end) AS "imsWarningOur",
+			count(case when DATEDIFF(ims_unicom_expiration_date,CURDATE())<![CDATA[ <360]]> or DATEDIFF(ims_telecom_expiration_date,CURDATE())<![CDATA[ <360]]> then a.id end) AS "imsWarningOther",
+			count(case when DATEDIFF(other_products_mobile_expiration_date,CURDATE())<![CDATA[ <360]]> then a.id end) AS "otherWarningOur",
+			count(case when DATEDIFF(other_products_unicom_expiration_date,CURDATE())<![CDATA[ <360]]> or DATEDIFF(other_products_telecom_expiration_date,CURDATE())<![CDATA[ <360]]> then a.id end) AS "otherWarningOther"
+		
+		FROM sys_office o2
+		LEFT JOIN (<include refid="selectPcGroup"/>) a ON  a.attributed_grid=o2.id
+		<where>
+			o2.del_flag = #{DEL_FLAG_NORMAL}
+			and o2.id<![CDATA[<>]]>'1' and o2.parent_id<![CDATA[<>]]>'1'	
+			<if test="organization != null and organization.id != null and organization.id != ''">
+				AND o2.parent_id = #{organization.id}
+			</if>			
+		</where>
+		group by 	o2.id
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY o2.sort ASC,o2.id ASC
+			</otherwise>
+		</choose>
+	</select>
+	<select id="findManagerCount" resultType="PcGroup">
+		SELECT 
+			a.customer_manager_name AS "customerManagerName",
+			<!-- o2.id AS "customerManagerNumber.id", -->
+			count(a.id) as "groupCount",
+			sum(ifnull(a.phone_usage_employees_number,0)) as "employeesNumberCount",
+			concat(FORMAT(ifnull(sum(ifnull(phone_usage_mobile_number,0))/sum(ifnull(phone_usage_mobile_number,0)+ifnull(phone_usage_unicom_number,0)+ifnull(phone_usage_telecom_number,0)),0)*100,0),'%') AS "marketShareCountOur",
+			concat(FORMAT(ifnull(sum(ifnull(phone_usage_unicom_number,0)+ifnull(phone_usage_telecom_number,0))/sum(ifnull(phone_usage_mobile_number,0)+ifnull(phone_usage_unicom_number,0)+ifnull(phone_usage_telecom_number,0)),0)*100,0),'%') AS "marketShareCountOther",
+			concat(FORMAT(ifnull(count(case when a.data_line_mobile_number>0 or a.internet_line_mobile_number>0 or a.voice_line_mobile_number>0 then a.id end)/count(a.id),0)*100,0),'%') AS "linePermeabilityOur",
+			concat(FORMAT(ifnull(count(case when a.data_line_unicom_number>0 or a.data_line_telecom_number>0 or a.internet_line_unicom_number>0 or a.internet_line_telecom_number>0 or a.voice_line_unicom_number>0 or a.voice_line_telecom_number>0 then a.id end)/count(a.id),0)*100,0),'%') AS "linePermeabilityOther",
+			concat(FORMAT(ifnull(count(case when a.ims_mobile_number>0 then a.id end)/count(a.id),0)*100,0),'%') AS "imsPermeabilityOur",
+			concat(FORMAT(ifnull(count(case when a.ims_unicom_number>0 or a.ims_telecom_number>0 then a.id end)/count(a.id),0)*100,0),'%') AS "imsPermeabilityOther",
+			count(case when DATEDIFF(phone_usage_mobile_expiration_date,CURDATE())<![CDATA[ <360]]>  then a.id end) AS "customerWarningOur",
+			count(case when DATEDIFF(phone_usage_unicom_expiration_date,CURDATE())<![CDATA[ <360]]> or DATEDIFF(phone_usage_telecom_expiration_date,CURDATE())<![CDATA[ <360]]> then a.id end) AS "customerWarningOther",
+			count(case when DATEDIFF(data_line_mobile_expiration_date,CURDATE())<![CDATA[ <360]]> or DATEDIFF(internet_line_mobile_expiration_date,CURDATE())<![CDATA[ <360]]> or DATEDIFF(voice_line_mobile_expiration_date,CURDATE())<![CDATA[ <360]]> then a.id end) AS "lineWarningOur",
+			count(case when DATEDIFF(data_line_unicom_expiration_date,CURDATE())<![CDATA[ <360]]> or DATEDIFF(data_line_telecom_expiration_date,CURDATE())<![CDATA[ <360]]> or DATEDIFF(internet_line_unicom_expiration_date,CURDATE())<![CDATA[ <360]]> or DATEDIFF(internet_line_telecom_expiration_date,CURDATE())<![CDATA[ <360]]> or DATEDIFF(voice_line_unicom_expiration_date,CURDATE())<![CDATA[ <360]]> or DATEDIFF(voice_line_telecom_expiration_date,CURDATE())<![CDATA[ <360]]> then a.id end) AS "lineWarningOther",
+			count(case when DATEDIFF(ims_mobile_expiration_date,CURDATE())<![CDATA[ <360]]> then a.id end) AS "imsWarningOur",
+			count(case when DATEDIFF(ims_unicom_expiration_date,CURDATE())<![CDATA[ <360]]> or DATEDIFF(ims_telecom_expiration_date,CURDATE())<![CDATA[ <360]]> then a.id end) AS "imsWarningOther",
+			count(case when DATEDIFF(other_products_mobile_expiration_date,CURDATE())<![CDATA[ <360]]> then a.id end) AS "otherWarningOur",
+			count(case when DATEDIFF(other_products_unicom_expiration_date,CURDATE())<![CDATA[ <360]]> or DATEDIFF(other_products_telecom_expiration_date,CURDATE())<![CDATA[ <360]]> then a.id end) AS "otherWarningOther"
+		
+		FROM sys_user o2
+		LEFT JOIN (<include refid="selectPcGroup"/>) a ON  a.customer_manager_number=o2.login_name
+		<where>	
+			<if test="attributedGrid != null and attributedGrid.id != null and attributedGrid.id != ''">
+				o2.office_id = #{attributedGrid.id}
+			</if>			
+		</where>
+		group by 	o2.id
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY o2.id ASC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<sql id="selectPcGroup">
+	    select a.* from pc_group a
+	    <where>
+			a.del_flag = '0'
+			<if test="attributedGrid != null and attributedGrid.id != null and attributedGrid.id != ''">
+				AND a.attributed_grid = #{attributedGrid.id}
+			</if>
+			<if test="organization != null and organization.id != null and organization.id != ''">
+				AND a.organization = #{organization.id}
+			</if>
+			<if test="customerLevel != null and customerLevel != ''">
+				AND a.customer_level LIKE concat('%',#{customerLevel},'%')
+			</if>
+			<if test="firstIndustryCategory != null and firstIndustryCategory != ''">
+				AND a.first_industry_category = #{firstIndustryCategory}
+			</if>
+			<if test="secondIndustryCategory != null and secondIndustryCategory != ''">
+				AND a.second_industry_category LIKE concat('%',#{secondIndustryCategory},'%')
+			</if>
+			<if test="enterpriseType != null and enterpriseType != ''">
+				AND a.enterprise_type = #{enterpriseType}
+			</if>
+			<if test="registeredCapital != null and registeredCapital != ''">
+				AND a.registered_capital <![CDATA[ >= #{registeredCapital} ]]>
+			</if>
+			<if test="registeredCapitalTo != null and registeredCapitalTo != ''">
+				AND a.registered_capital <![CDATA[ <= #{registeredCapitalTo} ]]>
+			</if>
+			<if test="taxRevenue != null and taxRevenue != ''">
+				AND a.tax_revenue <![CDATA[ >= #{taxRevenue} ]]>
+			</if>
+			<if test="taxRevenueTo != null and taxRevenueTo != ''">
+				AND a.tax_revenue <![CDATA[ <= #{taxRevenueTo} ]]>
+			</if>
+			
+			<if test="phoneUsageEmployeesNumber != null and phoneUsageEmployeesNumber != ''">
+				AND a.phone_usage_employees_number <![CDATA[ >= #{phoneUsageEmployeesNumber} ]]> 
+			</if>
+			<if test="phoneUsageEmployeesNumberTo != null and phoneUsageEmployeesNumberTo != ''">
+				AND a.phone_usage_employees_number <![CDATA[ <= #{phoneUsageEmployeesNumberTo} ]]> 
+			</if>
+			<if test="phoneUsageMobileMonthlyIncome != null and phoneUsageMobileMonthlyIncome != ''">
+				AND a.phone_usage_mobile_monthly_income+0  <![CDATA[ >=#{phoneUsageMobileMonthlyIncome}]]>
+			</if>
+			<if test="phoneUsageMobileMonthlyIncomeTo != null and phoneUsageMobileMonthlyIncomeTo != ''">
+				AND a.phone_usage_mobile_monthly_income+0 <![CDATA[ <= #{phoneUsageMobileMonthlyIncomeTo} ]]>
+			</if>
+						
+			<if test="phoneUsageUnicomMonthlyIncome != null and phoneUsageUnicomMonthlyIncome != ''">
+				AND a.phone_usage_unicom_monthly_income+0 <![CDATA[ >= #{phoneUsageUnicomMonthlyIncome} ]]>
+			</if>
+			<if test="phoneUsageUnicomMonthlyIncomeTo != null and phoneUsageUnicomMonthlyIncomeTo != ''">
+				AND a.phone_usage_unicom_monthly_income+0 <![CDATA[ <= #{phoneUsageUnicomMonthlyIncomeTo} ]]>
+			</if>			
+
+			<if test="phoneUsageTelecomMonthlyIncome != null and phoneUsageTelecomMonthlyIncome != ''">
+				AND a.phone_usage_telecom_monthly_income+0 <![CDATA[ >= #{phoneUsageTelecomMonthlyIncome} ]]>
+			</if>
+			<if test="phoneUsageTelecomMonthlyIncomeTo != null and phoneUsageTelecomMonthlyIncomeTo != ''">
+				AND a.phone_usage_telecom_monthly_income+0 <![CDATA[ <= #{phoneUsageTelecomMonthlyIncomeTo} ]]>
+			</if>
+
+			<if test="dataLineMobileMonthlyIncome != null and dataLineMobileMonthlyIncome != ''">
+				AND a.data_line_mobile_monthly_income+0 <![CDATA[ >= #{dataLineMobileMonthlyIncome} ]]>
+			</if>
+			<if test="dataLineMobileMonthlyIncomeTo != null and dataLineMobileMonthlyIncomeTo != ''">
+				AND a.data_line_mobile_monthly_income+0 <![CDATA[ <= #{dataLineMobileMonthlyIncomeTo} ]]>
+			</if>
+	
+			<if test="dataLineUnicomMonthlyIncome != null and dataLineUnicomMonthlyIncome != ''">
+				AND a.data_line_unicom_monthly_income+0<![CDATA[ >= #{dataLineUnicomMonthlyIncome} ]]>
+			</if>
+			<if test="dataLineUnicomMonthlyIncomeTo != null and dataLineUnicomMonthlyIncomeTo != ''">
+				AND a.data_line_unicom_monthly_income+0 <![CDATA[ <= #{dataLineUnicomMonthlyIncomeTo} ]]>
+			</if>
+			
+			<if test="dataLineTelecomMonthlyIncome != null and dataLineTelecomMonthlyIncome != ''">
+				AND a.data_line_telecom_monthly_income+0 <![CDATA[ >= #{dataLineTelecomMonthlyIncome} ]]>
+			</if>
+			<if test="dataLineTelecomMonthlyIncomeTo != null and dataLineTelecomMonthlyIncomeTo != ''">
+				AND a.data_line_telecom_monthly_income+0 <![CDATA[ <= #{dataLineTelecomMonthlyIncomeTo} ]]>
+			</if>
+			
+			<if test="internetLineMobileMonthlyIncome != null and internetLineMobileMonthlyIncome != ''">
+				AND a.internet_line_mobile_monthly_income+0 <![CDATA[ >= #{internetLineMobileMonthlyIncome} ]]>
+			</if>
+			<if test="internetLineMobileMonthlyIncomeTo != null and internetLineMobileMonthlyIncomeTo != ''">
+				AND a.internet_line_mobile_monthly_income+0 <![CDATA[ <= #{internetLineMobileMonthlyIncomeTo} ]]>
+			</if>
+			
+			<if test="internetLineUnicomMonthlyIncome != null and internetLineUnicomMonthlyIncome != ''">
+				AND a.internet_line_unicom_monthly_income+0 <![CDATA[ >= #{internetLineUnicomMonthlyIncome} ]]>
+			</if>
+			<if test="internetLineUnicomMonthlyIncomeTo != null and internetLineUnicomMonthlyIncomeTo != ''">
+				AND a.internet_line_unicom_monthly_income+0 <![CDATA[ <= #{internetLineUnicomMonthlyIncomeTo} ]]>
+			</if>
+			
+			<if test="internetLineTelecomMonthlyIncome != null and internetLineTelecomMonthlyIncome != ''">
+				AND a.internet_line_telecom_monthly_income+0 <![CDATA[ >= #{internetLineTelecomMonthlyIncome} ]]>
+			</if>
+			<if test="internetLineTelecomMonthlyIncomeTo != null and internetLineTelecomMonthlyIncomeTo != ''">
+				AND a.internet_line_telecom_monthly_income+0 <![CDATA[ <= #{internetLineTelecomMonthlyIncomeTo} ]]>
+			</if>
+			
+			<if test="voiceLineMobileMonthlyIncome != null and voiceLineMobileMonthlyIncome != ''">
+				AND a.voice_line_mobile_monthly_income+0 <![CDATA[ >= #{voiceLineMobileMonthlyIncome} ]]>
+			</if>
+			<if test="voiceLineMobileMonthlyIncomeTo != null and voiceLineMobileMonthlyIncomeTo != ''">
+				AND a.voice_line_mobile_monthly_income+0 <![CDATA[ <= #{voiceLineMobileMonthlyIncomeTo} ]]>
+			</if>
+			
+			<if test="voiceLineUnicomMonthlyIncome != null and voiceLineUnicomMonthlyIncome != ''">
+				AND a.voice_line_unicom_monthly_income+0 <![CDATA[ >= #{voiceLineUnicomMonthlyIncome} ]]>
+			</if>
+			<if test="voiceLineUnicomMonthlyIncomeTo != null and voiceLineUnicomMonthlyIncomeTo != ''">
+				AND a.voice_line_unicom_monthly_income+0 <![CDATA[ <= #{voiceLineUnicomMonthlyIncomeTo} ]]>
+			</if>
+			
+			<if test="voiceLineTelecomMonthlyIncome != null and voiceLineTelecomMonthlyIncome != ''">
+				AND a.voice_line_telecom_monthly_income+0 <![CDATA[ >= #{voiceLineTelecomMonthlyIncome} ]]>
+			</if>
+			<if test="voiceLineTelecomMonthlyIncomeTo != null and voiceLineTelecomMonthlyIncomeTo != ''">
+				AND a.voice_line_telecom_monthly_income+0 <![CDATA[ <= #{voiceLineTelecomMonthlyIncomeTo} ]]>
+			</if>
+			
+			<if test="imsMobileMonthlyIncome != null and imsMobileMonthlyIncome != ''">
+				AND a.ims_mobile_monthly_income+0 <![CDATA[ >= #{imsMobileMonthlyIncome} ]]>
+			</if>
+			<if test="imsMobileMonthlyIncomeTo != null and imsMobileMonthlyIncomeTo != ''">
+				AND a.ims_mobile_monthly_income+0 <![CDATA[ <= #{imsMobileMonthlyIncomeTo} ]]>
+			</if>
+			
+			<if test="imsUnicomMonthlyIncome != null and imsUnicomMonthlyIncome != ''">
+				AND a.ims_unicom_monthly_income+0 <![CDATA[ >= #{imsUnicomMonthlyIncome} ]]>
+			</if>
+			<if test="imsUnicomMonthlyIncomeTo != null and imsUnicomMonthlyIncomeTo != ''">
+				AND a.ims_unicom_monthly_income+0 <![CDATA[ <= #{imsUnicomMonthlyIncomeTo} ]]>
+			</if>
+			
+			<if test="imsTelecomMonthlyIncome != null and imsTelecomMonthlyIncome != ''">
+				AND a.ims_telecom_monthly_income+0 <![CDATA[ >= #{imsTelecomMonthlyIncome} ]]>
+			</if>
+			<if test="imsTelecomMonthlyIncomeTo != null and imsTelecomMonthlyIncomeTo != ''">
+				AND a.ims_telecom_monthly_income+0 <![CDATA[ <= #{imsTelecomMonthlyIncomeTo} ]]>
+			</if>
+			
+			<if test="otherProductsMobileMonthlyIncome != null and otherProductsMobileMonthlyIncome != ''">
+				AND a.other_products_mobile_monthly_income+0 <![CDATA[ >= #{otherProductsMobileMonthlyIncome} ]]>
+			</if>
+			<if test="otherProductsMobileMonthlyIncomeTo != null and otherProductsMobileMonthlyIncomeTo != ''">
+				AND a.other_products_mobile_monthly_income+0 <![CDATA[ <= #{otherProductsMobileMonthlyIncomeTo} ]]>
+			</if>
+			
+			<if test="otherProductsUnicomMonthlyIncome != null and otherProductsUnicomMonthlyIncome != ''">
+				AND a.other_products_unicom_monthly_income+0 <![CDATA[ >= #{otherProductsUnicomMonthlyIncome} ]]>
+			</if>
+			<if test="otherProductsUnicomMonthlyIncomeTo != null and otherProductsUnicomMonthlyIncomeTo != ''">
+				AND a.other_products_unicom_monthly_income+0 <![CDATA[ <= #{otherProductsUnicomMonthlyIncomeTo} ]]>
+			</if>
+			
+			<if test="otherProductsTelecomMonthlyIncome != null and otherProductsTelecomMonthlyIncome != ''">
+				AND a.other_products_telecom_monthly_income+0 <![CDATA[ >= #{otherProductsTelecomMonthlyIncome} ]]>
+			</if>
+			<if test="otherProductsTelecomMonthlyIncomeTo != null and otherProductsTelecomMonthlyIncomeTo != ''">
+				AND a.other_products_telecom_monthly_income+0 <![CDATA[ <= #{otherProductsTelecomMonthlyIncomeTo} ]]>
+			</if>
+			<if test="marketShare != null and marketShare != ''">
+			   AND ifnull(ifnull(phone_usage_mobile_number,0)/(ifnull(phone_usage_mobile_number,0)+ifnull(phone_usage_unicom_number,0)+ifnull(phone_usage_telecom_number,0)),0)*100   <![CDATA[ >= #{marketShare} ]]>
+			</if>
+			
+			<if test="marketShareTo != null and marketShareTo != ''">
+			   AND ifnull(ifnull(phone_usage_mobile_number,0)/(ifnull(phone_usage_mobile_number,0)+ifnull(phone_usage_unicom_number,0)+ifnull(phone_usage_telecom_number,0)),0)*100   <![CDATA[ <= #{marketShareTo} ]]>
+			</if>		
+		</where>
+	</sql>
+	 
+	<select id="findAllList" resultType="PcGroup">
+		SELECT 
+			<include refid="pcGroupColumns"/>
+		FROM pc_group a
+		<include refid="pcGroupJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO pc_group(
+			id,
+			organization,
+			group_number,
+			group_name,
+			
+			group_state,
+			org_parent_name,
+			
+			customer_level,
+			first_industry_category,
+			second_industry_category,
+			attributed_grid,
+			enterprise_type,
+			unit_actual_address,
+			identification_number,
+			registered_capital,
+			tax_revenue,
+			number_one_name,
+			number_one_phone,
+			charge_key_person_name,
+			charge_key_person_phone,
+			other_key_person_name,
+			other_key_person_phone,
+			contacts_name,
+			contacts_phone,
+			phone_usage_employees_number,
+			phone_usage_mobile_number,
+			phone_usage_mobile_monthly_income,
+			phone_usage_mobile_expiration_date,
+			phone_usage_unicom_number,
+			phone_usage_unicom_monthly_income,
+			phone_usage_unicom_expiration_date,
+			phone_usage_telecom_number,
+			phone_usage_telecom_monthly_income,
+			phone_usage_telecom_expiration_date,
+			data_line_mobile_number,
+			data_line_mobile_monthly_income,
+			data_line_mobile_expiration_date,
+			data_line_unicom_number,
+			data_line_unicom_monthly_income,
+			data_line_unicom_expiration_date,
+			data_line_telecom_number,
+			data_line_telecom_monthly_income,
+			data_line_telecom_expiration_date,
+			internet_line_mobile_number,
+			internet_line_mobile_monthly_income,
+			internet_line_mobile_expiration_date,
+			internet_line_unicom_number,
+			internet_line_unicom_monthly_income,
+			internet_line_unicom_expiration_date,
+			internet_line_telecom_number,
+			internet_line_telecom_monthly_income,
+			internet_line_telecom_expiration_date,
+			voice_line_mobile_number,
+			voice_line_mobile_monthly_income,
+			voice_line_mobile_expiration_date,
+			voice_line_unicom_number,
+			voice_line_unicom_monthly_income,
+			voice_line_unicom_expiration_date,
+			voice_line_telecom_number,
+			voice_line_telecom_monthly_income,
+			voice_line_telecom_expiration_date,
+			ims_mobile_number,
+			ims_mobile_monthly_income,
+			ims_mobile_expiration_date,
+			ims_unicom_number,
+			ims_unicom_monthly_income,
+			ims_unicom_expiration_date,
+			ims_telecom_number,
+			ims_telecom_monthly_income,
+			ims_telecom_expiration_date,
+			
+			wlwk_yd_businessname,
+			wlwk_yd_income,      
+			wlwk_yd_dateto,      
+			wlwk_lt_businessname,
+			wlwk_lt_income,      
+			wlwk_lt_dateto,      
+			wlwk_dx_businessname,
+			wlwk_dx_income,      
+			wlwk_dx_dateto,     
+	
+			idc_yd_businessname,
+			idc_yd_zf ,          
+			idc_yd_dateto,      
+			idc_lt_businessname,
+			idc_lt_zf ,         
+			idc_lt_dateto,      
+			idc_qt_businessname,
+			idc_qt_addr,       
+			idc_qt_zf,         
+			idc_qt_dateto,   
+			
+			other_products_mobile_business_name,
+			other_products_mobile_monthly_income,
+			other_products_mobile_expiration_date,
+			other_products_unicom_business_name,
+			other_products_unicom_monthly_income,
+			other_products_unicom_expiration_date,
+			other_products_telecom_business_name,
+			other_products_telecom_monthly_income,
+			other_products_telecom_expiration_date,
+			follow_up_business_name,
+			follow_up_situation,
+			customer_manager_number,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag,
+			customer_manager_name,
+			unified_payment_number,
+			unified_payment_income,
+			information_key_person_phone,
+			information_key_person_name
+		) VALUES (
+			#{id},
+			#{organization.id},
+			#{groupNumber},
+			#{groupName},
+			
+			#{groupState},
+			#{orgParentName},
+			
+			#{customerLevel},
+			#{firstIndustryCategory},
+			#{secondIndustryCategory},
+			#{attributedGrid.id},
+			#{enterpriseType},
+			#{unitActualAddress},
+			#{identificationNumber},
+			#{registeredCapital},
+			#{taxRevenue},
+			#{numberOneName},
+			#{numberOnePhone},
+			#{chargeKeyPersonName},
+			#{chargeKeyPersonPhone},
+			#{otherKeyPersonName},
+			#{otherKeyPersonPhone},
+			#{contactsName},
+			#{contactsPhone},
+			#{phoneUsageEmployeesNumber},
+			#{phoneUsageMobileNumber},
+			#{phoneUsageMobileMonthlyIncome},
+			#{phoneUsageMobileExpirationDate},
+			#{phoneUsageUnicomNumber},
+			#{phoneUsageUnicomMonthlyIncome},
+			#{phoneUsageUnicomExpirationDate},
+			#{phoneUsageTelecomNumber},
+			#{phoneUsageTelecomMonthlyIncome},
+			#{phoneUsageTelecomExpirationDate},
+			#{dataLineMobileNumber},
+			#{dataLineMobileMonthlyIncome},
+			#{dataLineMobileExpirationDate},
+			#{dataLineUnicomNumber},
+			#{dataLineUnicomMonthlyIncome},
+			#{dataLineUnicomExpirationDate},
+			#{dataLineTelecomNumber},
+			#{dataLineTelecomMonthlyIncome},
+			#{dataLineTelecomExpirationDate},
+			#{internetLineMobileNumber},
+			#{internetLineMobileMonthlyIncome},
+			#{internetLineMobileExpirationDate},
+			#{internetLineUnicomNumber},
+			#{internetLineUnicomMonthlyIncome},
+			#{internetLineUnicomExpirationDate},
+			#{internetLineTelecomNumber},
+			#{internetLineTelecomMonthlyIncome},
+			#{internetLineTelecomExpirationDate},
+			#{voiceLineMobileNumber},
+			#{voiceLineMobileMonthlyIncome},
+			#{voiceLineMobileExpirationDate},
+			#{voiceLineUnicomNumber},
+			#{voiceLineUnicomMonthlyIncome},
+			#{voiceLineUnicomExpirationDate},
+			#{voiceLineTelecomNumber},
+			#{voiceLineTelecomMonthlyIncome},
+			#{voiceLineTelecomExpirationDate},
+			#{imsMobileNumber},
+			#{imsMobileMonthlyIncome},
+			#{imsMobileExpirationDate},
+			#{imsUnicomNumber},
+			#{imsUnicomMonthlyIncome},
+			#{imsUnicomExpirationDate},
+			#{imsTelecomNumber},
+			#{imsTelecomMonthlyIncome},
+			#{imsTelecomExpirationDate},
+			
+			#{wlwkYdBusinessName},
+			#{wlwkYdIncome},
+			#{wlwkYdDateTo},
+			#{wlwkLtBusinessName},
+			#{wlwkLtIncome},
+			#{wlwkLtDateTo},
+			#{wlwkDxBusinessName},
+			#{wlwkDxIncome},
+			#{wlwkDxDateTo},
+			
+			#{iDCYdBusinessName},
+	        #{iDCYdZf},
+			#{iDCYdDateTo},
+			#{iDCLtBusinessName},
+			#{iDCLtZf},
+			#{iDCLtDateTo},
+			#{iDCQtBusinessName},
+			#{iDCQtAddr},
+			#{iDCQtZf},
+			#{iDCQtDateTo},
+			
+			#{otherProductsMobileBusinessName},
+			#{otherProductsMobileMonthlyIncome},
+			#{otherProductsMobileExpirationDate},
+			#{otherProductsUnicomBusinessName},
+			#{otherProductsUnicomMonthlyIncome},
+			#{otherProductsUnicomExpirationDate},
+			#{otherProductsTelecomBusinessName},
+			#{otherProductsTelecomMonthlyIncome},
+			#{otherProductsTelecomExpirationDate},
+			#{followUpBusinessName},
+			#{followUpSituation},
+			#{customerManagerNumber},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag},
+			#{customerManagerName},
+			#{unifiedPaymentNumber},
+			#{unifiedPaymentIncome},
+			#{informationKeyPersonPhone},
+			#{informationKeyPersonName}
+			
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE pc_group SET 	
+			organization = #{organization.id},
+			group_number = #{groupNumber},
+			group_name = #{groupName},
+			
+			group_state     = #{groupState},
+			org_parent_name = #{orgParentName},
+			
+			customer_level = #{customerLevel},
+			first_industry_category = #{firstIndustryCategory},
+			second_industry_category = #{secondIndustryCategory},
+			attributed_grid = #{attributedGrid.id},
+			enterprise_type = #{enterpriseType},
+			unit_actual_address = #{unitActualAddress},
+			identification_number = #{identificationNumber},
+			registered_capital = #{registeredCapital},
+			tax_revenue = #{taxRevenue},
+			number_one_name = #{numberOneName},
+			number_one_phone = #{numberOnePhone},
+			charge_key_person_name = #{chargeKeyPersonName},
+			charge_key_person_phone = #{chargeKeyPersonPhone},
+			other_key_person_name = #{otherKeyPersonName},
+			other_key_person_phone = #{otherKeyPersonPhone},
+			contacts_name = #{contactsName},
+			contacts_phone = #{contactsPhone},
+			phone_usage_employees_number = #{phoneUsageEmployeesNumber},
+			phone_usage_mobile_number = #{phoneUsageMobileNumber},
+			phone_usage_mobile_monthly_income = #{phoneUsageMobileMonthlyIncome},
+			phone_usage_mobile_expiration_date = #{phoneUsageMobileExpirationDate},
+			phone_usage_unicom_number = #{phoneUsageUnicomNumber},
+			phone_usage_unicom_monthly_income = #{phoneUsageUnicomMonthlyIncome},
+			phone_usage_unicom_expiration_date = #{phoneUsageUnicomExpirationDate},
+			phone_usage_telecom_number = #{phoneUsageTelecomNumber},
+			phone_usage_telecom_monthly_income = #{phoneUsageTelecomMonthlyIncome},
+			phone_usage_telecom_expiration_date = #{phoneUsageTelecomExpirationDate},
+			data_line_mobile_number = #{dataLineMobileNumber},
+			data_line_mobile_monthly_income = #{dataLineMobileMonthlyIncome},
+			data_line_mobile_expiration_date = #{dataLineMobileExpirationDate},
+			data_line_unicom_number = #{dataLineUnicomNumber},
+			data_line_unicom_monthly_income = #{dataLineUnicomMonthlyIncome},
+			data_line_unicom_expiration_date = #{dataLineUnicomExpirationDate},
+			data_line_telecom_number = #{dataLineTelecomNumber},
+			data_line_telecom_monthly_income = #{dataLineTelecomMonthlyIncome},
+			data_line_telecom_expiration_date = #{dataLineTelecomExpirationDate},
+			internet_line_mobile_number = #{internetLineMobileNumber},
+			internet_line_mobile_monthly_income = #{internetLineMobileMonthlyIncome},
+			internet_line_mobile_expiration_date = #{internetLineMobileExpirationDate},
+			internet_line_unicom_number = #{internetLineUnicomNumber},
+			internet_line_unicom_monthly_income = #{internetLineUnicomMonthlyIncome},
+			internet_line_unicom_expiration_date = #{internetLineUnicomExpirationDate},
+			internet_line_telecom_number = #{internetLineTelecomNumber},
+			internet_line_telecom_monthly_income = #{internetLineTelecomMonthlyIncome},
+			internet_line_telecom_expiration_date = #{internetLineTelecomExpirationDate},
+			voice_line_mobile_number = #{voiceLineMobileNumber},
+			voice_line_mobile_monthly_income = #{voiceLineMobileMonthlyIncome},
+			voice_line_mobile_expiration_date = #{voiceLineMobileExpirationDate},
+			voice_line_unicom_number = #{voiceLineUnicomNumber},
+			voice_line_unicom_monthly_income = #{voiceLineUnicomMonthlyIncome},
+			voice_line_unicom_expiration_date = #{voiceLineUnicomExpirationDate},
+			voice_line_telecom_number = #{voiceLineTelecomNumber},
+			voice_line_telecom_monthly_income = #{voiceLineTelecomMonthlyIncome},
+			voice_line_telecom_expiration_date = #{voiceLineTelecomExpirationDate},
+			ims_mobile_number = #{imsMobileNumber},
+			ims_mobile_monthly_income = #{imsMobileMonthlyIncome},
+			ims_mobile_expiration_date = #{imsMobileExpirationDate},
+			ims_unicom_number = #{imsUnicomNumber},
+			ims_unicom_monthly_income = #{imsUnicomMonthlyIncome},
+			ims_unicom_expiration_date = #{imsUnicomExpirationDate},
+			ims_telecom_number = #{imsTelecomNumber},
+			ims_telecom_monthly_income = #{imsTelecomMonthlyIncome},
+			ims_telecom_expiration_date = #{imsTelecomExpirationDate},
+		    
+			wlwk_yd_businessname = #{wlwkYdBusinessName},
+			wlwk_yd_income       = #{wlwkYdIncome},      
+			wlwk_yd_dateto       = #{wlwkYdDateTo},      
+			wlwk_lt_businessname = #{wlwkLtBusinessName},
+			wlwk_lt_income       = #{wlwkLtIncome},      
+			wlwk_lt_dateto       = #{wlwkLtDateTo},      
+			wlwk_dx_businessname = #{wlwkDxBusinessName},
+			wlwk_dx_income       = #{wlwkDxIncome},      
+			wlwk_dx_dateto       = #{wlwkDxDateTo},     
+		
+			idc_yd_businessname = #{iDCYdBusinessName},
+			idc_yd_zf           = #{iDCYdZf},          
+			idc_yd_dateto       = #{iDCYdDateTo},      
+			idc_lt_businessname = #{iDCLtBusinessName},
+			idc_lt_zf           = #{iDCLtZf},         
+			idc_lt_dateto       = #{iDCLtDateTo},      
+			idc_qt_businessname = #{iDCQtBusinessName},
+			idc_qt_addr         = #{iDCQtAddr},       
+			idc_qt_zf           = #{iDCQtZf},         
+			idc_qt_dateto       = #{iDCQtDateTo}, 
+			
+			other_products_mobile_business_name = #{otherProductsMobileBusinessName},
+			other_products_mobile_monthly_income = #{otherProductsMobileMonthlyIncome},
+			other_products_mobile_expiration_date = #{otherProductsMobileExpirationDate},
+			other_products_unicom_business_name = #{otherProductsUnicomBusinessName},
+			other_products_unicom_monthly_income = #{otherProductsUnicomMonthlyIncome},
+			other_products_unicom_expiration_date = #{otherProductsUnicomExpirationDate},
+			other_products_telecom_business_name = #{otherProductsTelecomBusinessName},
+			other_products_telecom_monthly_income = #{otherProductsTelecomMonthlyIncome},
+			other_products_telecom_expiration_date = #{otherProductsTelecomExpirationDate},
+			follow_up_business_name = #{followUpBusinessName},
+			follow_up_situation = #{followUpSituation},
+			customer_manager_number = #{customerManagerNumber},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks},
+			customer_manager_name = #{customerManagerName},
+			unified_payment_number = #{unifiedPaymentNumber},
+			unified_payment_income = #{unifiedPaymentIncome},
+			information_key_person_phone = #{informationKeyPersonPhone},
+			information_key_person_name = #{informationKeyPersonName}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE pc_group SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

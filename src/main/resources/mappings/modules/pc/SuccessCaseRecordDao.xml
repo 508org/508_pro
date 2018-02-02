@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tianyang.modules.pc.dao.SuccessCaseRecordDao">
+    
+	<sql id="successCaseRecordColumns">
+		a.ID AS "id",
+		a.success_case_ID AS "successCase.id",
+		a.USER_ID AS "user.id",
+		a.READ_FLAG AS "readFlag",
+		a.READ_DATE AS "readDate",
+		a.like_flag as "likeFlag",
+		a.comment   as "comment",
+		u.name AS "user.name",
+		o.name AS "user.office.name"
+	</sql>
+	
+	<sql id="successCaseRecordJoins">
+		JOIN sys_user u ON u.id = a.user_id
+		JOIN sys_office o ON o.id = u.office_id
+	</sql>
+    
+	<select id="get" resultType="SuccessCaseRecord">
+		SELECT 
+			<include refid="successCaseRecordColumns"/>
+		FROM success_case_record a
+		<include refid="successCaseRecordJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="SuccessCaseRecord">
+		SELECT 
+			<include refid="successCaseRecordColumns"/>
+		FROM success_case_record a
+		<include refid="successCaseRecordJoins"/>
+		WHERE 1=1
+		<if test="successCase != null and successCase.id != null and successCase.id != ''">
+			AND success_case_id = #{successCase.id}
+		</if>
+		ORDER BY a.READ_DATE ASC
+	</select>
+	
+	<select id="findAllList" resultType="SuccessCaseRecord">
+		SELECT 
+			<include refid="successCaseRecordColumns"/>
+		FROM success_case_record a
+		<include refid="successCaseRecordJoins"/>
+		WHERE 1=1
+		ORDER BY a.READ_DATE ASC
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO success_case_record(
+			ID,
+			success_case_ID,
+			USER_ID,
+			READ_FLAG,
+			like_flag ,
+		    comment   ,
+			READ_DATE
+		) VALUES (
+			#{id},
+			#{successCase.id},
+			#{user.id},
+			#{readFlag},
+			#{likeFlag},
+			#{comment},
+			#{readDate}
+		)
+	</insert>
+	
+	<insert id="insertAll" parameterType="List">
+		INSERT INTO success_case_record(
+			ID,
+			success_case_ID,
+			USER_ID,
+			READ_FLAG,
+			like_flag ,
+		    comment   ,
+			READ_DATE
+		)
+		<if test="list.get(0).dbName == 'oracle'">
+			<foreach collection="list" item="e" separator=" union all ">
+				SELECT #{e.id},
+				#{e.successCase.id},
+				#{e.user.id},
+				#{e.readFlag},
+				#{e.likeFlag},
+				#{e.comment},
+				#{e.readDate} FROM dual
+			</foreach>
+		</if>
+		<if test="list.get(0).dbName == 'mssql' or list.get(0).dbName == 'mysql'"> VALUES  
+		    <foreach collection="list" item="e" open="" separator="," close="">  
+				(#{e.id},
+				#{e.successCase.id},
+				#{e.user.id},
+				#{e.readFlag},
+				#{e.likeFlag},
+				#{e.comment},
+				#{e.readDate})
+			</foreach>
+	    </if>
+	</insert>
+	
+	<update id="update">
+		UPDATE success_case_record SET 
+		    
+		    <if test="likeFlag != null and likeFlag != ''">
+				like_flag = #{likeFlag},
+			</if>
+			<if test="comment != null and comment != ''">
+				comment   = #{comment},
+			</if>
+			READ_FLAG = '1'
+			
+			
+		WHERE success_case_ID = #{successCase.id}
+			AND USER_ID = #{user.id}
+			AND READ_FLAG = '1'
+	</update>
+	
+	<delete id="delete">
+		UPDATE FROM success_case_record 
+		WHERE id = #{id}
+	</delete>
+	
+	<delete id="deleteBySuccessCaseId">
+		DELETE FROM success_case_record 
+		WHERE success_case_id = #{successCaseId}
+	</delete>
+	
+</mapper>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tianyang.modules.files.dao.FilesDao">
+    
+	<sql id="filesColumns">
+		a.id AS "id",
+		a.url AS "url"
+	</sql>
+	
+	<sql id="filesJoins">
+	</sql>
+    
+	<select id="get" resultType="Files">
+		SELECT 
+			<include refid="filesColumns"/>
+		FROM files a
+		<include refid="filesJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Files">
+		SELECT 
+			<include refid="filesColumns"/>
+		FROM files a
+		<include refid="filesJoins"/>
+		<where>
+			
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Files">
+		SELECT 
+			<include refid="filesColumns"/>
+		FROM files a
+		<include refid="filesJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO files(
+			id,
+			url
+		) VALUES (
+			#{id},
+			#{url}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE files SET 	
+			url = #{url}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM files
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

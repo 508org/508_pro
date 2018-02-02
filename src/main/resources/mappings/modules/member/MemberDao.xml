@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tianyang.modules.member.dao.MemberDao">
+    
+	<sql id="memberColumns">
+		a.id AS "id",
+		a.city AS "city",
+		a.country AS "country",
+		a.createdatetime AS "createdatetime",
+		a.headimgurl AS "headimgurl",
+		a.language AS "language",
+		a.nickname AS "nickname",
+		a.openid AS "openid",
+		a.province AS "province",
+		a.remark AS "remark",
+		a.sex AS "sex",
+		a.updatedatetime AS "updatedatetime",
+		a.credit AS "credit"
+	</sql>
+	
+	<sql id="memberJoins">
+	</sql>
+    
+	<select id="get" resultType="Member">
+		SELECT 
+			<include refid="memberColumns"/>
+		FROM member a
+		<include refid="memberJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Member">
+		SELECT 
+			<include refid="memberColumns"/>
+		FROM member a
+		<include refid="memberJoins"/>
+		<where>
+			
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Member">
+		SELECT 
+			<include refid="memberColumns"/>
+		FROM member a
+		<include refid="memberJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO member(
+			id,
+			city,
+			country,
+			createdatetime,
+			headimgurl,
+			language,
+			nickname,
+			openid,
+			province,
+			remark,
+			sex,
+			updatedatetime,
+			credit
+		) VALUES (
+			#{id},
+			#{city},
+			#{country},
+			#{createdatetime},
+			#{headimgurl},
+			#{language},
+			#{nickname},
+			#{openid},
+			#{province},
+			#{remark},
+			#{sex},
+			#{updatedatetime},
+			#{credit}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE member SET 	
+			city = #{city},
+			country = #{country},
+			createdatetime = #{createdatetime},
+			headimgurl = #{headimgurl},
+			language = #{language},
+			nickname = #{nickname},
+			openid = #{openid},
+			province = #{province},
+			remark = #{remark},
+			sex = #{sex},
+			updatedatetime = #{updatedatetime},
+			credit = #{credit}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM member
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

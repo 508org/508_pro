@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tianyang.modules.sys.dao.WeixinMenuDao">
+    
+	<sql id="weixinMenuColumns">
+		a.id AS "id",
+		a.action_type AS "actionType",
+		a.createdatetime AS "createdatetime",
+		a.iconcls AS "iconcls",
+		a.keywx AS "keywx",
+		a.menu_type AS "menuType",
+		a.name AS "name",
+		a.updatedatetime AS "updatedatetime",
+		a.url AS "url",
+		a.parent_id AS "parent.id",
+		a.selectid AS "selectid"
+	</sql>
+	
+	<sql id="weixinMenuJoins">
+	</sql>
+    
+	<select id="get" resultType="WeixinMenu">
+		SELECT 
+			<include refid="weixinMenuColumns"/>
+		FROM weixin_menu a
+		<include refid="weixinMenuJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="WeixinMenu">
+		SELECT 
+			<include refid="weixinMenuColumns"/>
+		FROM weixin_menu a
+		  ORDER BY a.id
+	</select>
+	<select id="getParentIdAndName" resultType="WeixinMenu">
+		SELECT 
+			a.id,
+			a.name,
+			a.ACTION_TYPE,
+			a.MENU_TYPE,
+			a.url,
+			a.keywx
+			
+		FROM weixin_menu a 
+		where 1=1
+		AND a.MENU_TYPE= #{menuType}
+		<if test="menuType == 'button'">
+			AND ( a.PARENT_ID is null or a.PARENT_ID = '')
+		</if>
+		<if test="menuType == 'sub_button'">
+			AND a.PARENT_ID  = #{selectid}
+		</if>
+		
+		  ORDER BY a.id
+	</select>
+	
+	<select id="findAllList" resultType="WeixinMenu">
+		SELECT 
+			<include refid="weixinMenuColumns"/>
+		FROM weixin_menu a
+		<include refid="weixinMenuJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO weixin_menu(
+			id,
+			action_type,
+			createdatetime,
+			iconcls,
+			keywx,
+			menu_type,
+			name,
+			updatedatetime,
+			url,
+			parent_id,
+			selectid
+		) VALUES (
+			#{id},
+			#{actionType},
+			#{createdatetime},
+			#{iconcls},
+			#{keywx},
+			#{menuType},
+			#{name},
+			#{updatedatetime},
+			#{url},
+			#{parent.id},
+			#{selectid}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE weixin_menu SET 	
+			action_type = #{actionType},
+			createdatetime = #{createdatetime},
+			iconcls = #{iconcls},
+			keywx = #{keywx},
+			menu_type = #{menuType},
+			name = #{name},
+			updatedatetime = #{updatedatetime},
+			url = #{url},
+			parent_id = #{parent.id},
+			selectid = #{selectid}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM weixin_menu
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

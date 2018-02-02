@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tianyang.modules.pc.dao.PcGroupMobileNumberDao">
+    
+	<sql id="pcGroupMobileNumberColumns">
+		a.id AS "id",
+		a.mobile_number AS "mobileNumber",
+		a.operators AS "operators",
+		a.group_number AS "groupNumber",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="pcGroupMobileNumberJoins">
+	</sql>
+    
+	<select id="get" resultType="PcGroupMobileNumber">
+		SELECT 
+			<include refid="pcGroupMobileNumberColumns"/>
+		FROM pc_group_mobile_number a
+		<include refid="pcGroupMobileNumberJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	<select id="getMobileByMobileNumber" resultType="PcGroupMobileNumber">
+		SELECT 
+			<include refid="pcGroupMobileNumberColumns"/>
+		FROM pc_group_mobile_number a
+		<include refid="pcGroupMobileNumberJoins"/>
+		WHERE a.del_flag = '0'
+		<if test="mobileNumber != null and mobileNumber != ''">
+				AND a.mobile_number = #{mobileNumber}
+		</if>
+	</select>
+	
+	<select id="findList" resultType="PcGroupMobileNumber">
+		SELECT 
+			<include refid="pcGroupMobileNumberColumns"/>
+		FROM pc_group_mobile_number a
+		<include refid="pcGroupMobileNumberJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="mobileNumber != null and mobileNumber != ''">
+				AND a.mobile_number = #{mobileNumber}
+			</if>
+			<if test="operators != null and operators != ''">
+				AND a.operators = #{operators}
+			</if>
+			<if test="groupNumber != null and groupNumber != ''">
+				AND a.group_number = #{groupNumber}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="PcGroupMobileNumber">
+		SELECT 
+			<include refid="pcGroupMobileNumberColumns"/>
+		FROM pc_group_mobile_number a
+		<include refid="pcGroupMobileNumberJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO pc_group_mobile_number(
+			id,
+			mobile_number,
+			operators,
+			group_number,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{mobileNumber},
+			#{operators},
+			#{groupNumber},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE pc_group_mobile_number SET 	
+			mobile_number = #{mobileNumber},
+			operators = #{operators},
+			group_number = #{groupNumber},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE pc_group_mobile_number SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

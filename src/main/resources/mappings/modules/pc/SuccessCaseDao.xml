@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tianyang.modules.pc.dao.SuccessCaseDao">
+    
+	<sql id="successCaseColumns">
+		a.ID AS "id",
+		a.TYPE AS "type",
+		a.TITLE AS "title",
+		a.CONTENT AS "content",
+		a.FILES AS "files",
+		a.STATUS AS "status",
+		a.CREATE_BY AS "createBy.id",
+		a.CREATE_DATE AS "createDate",
+		a.UPDATE_BY AS "updateBy.id",
+		a.UPDATE_DATE AS "updateDate",
+		a.REMARKS AS "remarks",
+		a.DEL_FLAG AS "delFlag",
+	    b.read_num,
+	    b.un_read_num
+	</sql>
+	
+	<sql id="successCaseJoins">
+		<!-- 查询已读和未读条数 -->
+		LEFT JOIN (
+            SELECT r.success_case_id, 
+                   sum(case when r.read_flag = '1' then 1 else 0 end) read_num,
+                   sum(case when r.read_flag != '1' then 1 else 0 end) un_read_num 
+            FROM success_case_record r GROUP BY r.success_case_id
+    	) b ON b.success_case_id = a.id
+	</sql>
+    
+	<select id="get" resultType="SuccessCase">
+		SELECT 
+			<include refid="successCaseColumns"/>
+		FROM success_case a
+		<include refid="successCaseJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="SuccessCase">
+		SELECT 
+			<include refid="successCaseColumns"/>
+			<if test="isSelf">,
+				r.read_flag
+			</if>
+		FROM success_case a
+		<include refid="successCaseJoins"/>
+		<!-- 我的通知 -->
+		<if test="isSelf">
+			JOIN success_case_record r ON r.success_case_id = a.id AND r.user_id = #{currentUser.id}
+		</if>
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
+		<if test="title != null and title != ''">
+			AND a.TITLE LIKE 
+					<if test="dbName == 'oracle'">'%'||#{title}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{title}+'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{title}, '%')</if>
+		</if>
+		<if test="type != null and type != ''">
+			AND a.TYPE = #{type}
+		</if>
+		<if test="status != null and status != ''">
+			AND a.STATUS = #{status}
+		</if>
+		<if test="isSelf">
+			AND a.STATUS = '1'
+		</if>
+		ORDER BY a.update_date DESC
+	</select>
+	
+	<select id="findAllList" resultType="SuccessCase">
+		SELECT 
+			<include refid="successCaseColumns"/>
+		FROM success_case a
+		<include refid="successCaseJoins"/>
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL} 
+		ORDER BY a.update_date DESC
+	</select>
+	
+	<select id="findCount" resultType="Long">
+		SELECT 
+			count(1)
+		FROM success_case a
+		<if test="isSelf">
+			JOIN success_case_record r ON r.success_case_id = a.id AND r.user_id = #{currentUser.id}
+				<if test="readFlag != null and readFlag != ''">
+					AND r.read_flag = #{readFlag}
+				</if>
+		</if>
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
+		<if test="isSelf">
+			AND a.STATUS = '1'
+		</if>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO success_case(
+			ID,
+			TYPE,
+			TITLE,
+			CONTENT,
+			FILES,
+			STATUS,
+			CREATE_BY,
+			CREATE_DATE,
+			UPDATE_BY,
+			UPDATE_DATE,
+			REMARKS,
+			DEL_FLAG
+		) VALUES (
+			#{id},
+			#{type},
+			#{title},
+			#{content},
+			#{files},
+			#{status},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE success_case SET 	
+			TYPE = #{type},
+			TITLE = #{title},
+			CONTENT = #{content},
+			FILES = #{files},
+			STATUS = #{status},
+			UPDATE_BY = #{updateBy.id},
+			UPDATE_DATE = #{updateDate},
+			REMARKS = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE success_case SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

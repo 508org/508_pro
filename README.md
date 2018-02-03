@@ -6,3 +6,4 @@
 如查改动同一地方test2-windwo
 好啊
 那我klee12347也来修改一下
+atom上的github提交的代码测试
